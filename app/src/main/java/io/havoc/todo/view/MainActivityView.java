@@ -7,5 +7,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface MainActivityView extends TiView {
 
     @CallOnMainThread
-    void showText(final String text);
+//    @DistinctUntilChanged
+    void showList();
 }
