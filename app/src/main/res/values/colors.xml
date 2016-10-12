@@ -306,6 +306,6 @@
     
     <!--Task List colors-->
     <color name="bg_swipe_item_neutral">@color/md_grey_100</color>
-    <color name="bg_swipe_item_left">@color/md_green_A200</color>
-    <color name="bg_swipe_item_right">@color/md_orange_A200</color>
+    <color name="bg_swipe_item_left">@color/md_orange_A200</color>
+    <color name="bg_swipe_item_right">@color/md_green_A200</color>
 </resources>

@@ -61,27 +61,23 @@ public class ListFragment extends Fragment {
         list.add("Browse Reddit");
 
         //adapter
-        final TaskListAdapter myItemAdapter = new TaskListAdapter(list);
-        myItemAdapter.setEventListener(new TaskListAdapter.EventListener() {
+        final TaskListAdapter taskAdapter = new TaskListAdapter(list);
+        taskAdapter.setEventListener(new TaskListAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {
 //                ((MainActivity) getActivity()).onItemRemoved(position);
             }
 
-//            @Override
-//            public void onItemPinned(int position) {
-//                ((MainActivity) getActivity()).onItemPinned(position);
-//            }
-
             @Override
-            public void onItemViewClicked(View v, boolean pinned) {
-                onItemViewClick(v, pinned);
+            public void onItemViewClicked(View v) {
+                onItemViewClick(v);
             }
         });
 
-        mAdapter = myItemAdapter;
+        mAdapter = taskAdapter;
 
-        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(myItemAdapter);      // wrap for swiping
+        // wrap for swiping
+        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(taskAdapter);
 
         final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
 
@@ -139,7 +135,7 @@ public class ListFragment extends Fragment {
         super.onDestroyView();
     }
 
-    private void onItemViewClick(View v, boolean pinned) {
+    private void onItemViewClick(View v) {
         int position = mRecyclerView.getChildAdapterPosition(v);
 //        if (position != RecyclerView.NO_POSITION) {
 //            ((MainActivity) getActivity()).onItemClicked(position);

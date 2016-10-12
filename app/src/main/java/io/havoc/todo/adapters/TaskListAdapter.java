@@ -53,13 +53,13 @@ public class TaskListAdapter
 
     private void onItemViewClick(View v) {
         if (mEventListener != null) {
-            mEventListener.onItemViewClicked(v, true); // true --- pinned
+            mEventListener.onItemViewClicked(v); // true --- pinned
         }
     }
 
     private void onSwipeableViewContainerClick(View v) {
         if (mEventListener != null) {
-            mEventListener.onItemViewClicked(RecyclerViewAdapterUtils.getParentViewHolderItemView(v), false);  // false --- not pinned
+            mEventListener.onItemViewClicked(RecyclerViewAdapterUtils.getParentViewHolderItemView(v));
         }
     }
 
@@ -73,8 +73,6 @@ public class TaskListAdapter
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        //TODO, handle setting the RV item's layout here
-//        final AbstractTaskProvider.Task item = mList.getItem(position);
         final Object item = mList.get(position);
 
         // set listeners
@@ -90,7 +88,7 @@ public class TaskListAdapter
         final int swipeState = holder.getSwipeStateFlags();
 
         if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
-            //TODO, actually handle colors of swipe states
+            //TODO, actually handle colors of swipe states?
 //            int bgResId;
 
 //            if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
@@ -111,6 +109,15 @@ public class TaskListAdapter
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        /**
+         * TODO getItemId()
+         * Will have to tie in some unique id with a given task; use that to specify tasks
+          */
+        return mList.get(position).hashCode();
     }
 
     @Override
@@ -141,13 +148,13 @@ public class TaskListAdapter
         LogUtil.d("onSwipeItem(position = " + position + ", result = " + result + ")");
 
         switch (result) {
-            // swipe right
+            //swipe right -- mark as done
             case Swipeable.RESULT_SWIPED_RIGHT:
                 return new SwipeRightResultAction(this, position);
-            // swipe left -- pin
+            //swipe left -- snooze
             case Swipeable.RESULT_SWIPED_LEFT:
                 return new SwipeLeftResultAction(this, position);
-            // other --- do nothing
+            //other --- do nothing
             case Swipeable.RESULT_CANCELED:
             default:
                 return null;
@@ -169,9 +176,7 @@ public class TaskListAdapter
     public interface EventListener {
         void onItemRemoved(int position);
 
-//        void onItemPinned(int position);
-
-        void onItemViewClicked(View v, boolean pinned);
+        void onItemViewClicked(View v);
     }
 
     static class MyViewHolder extends AbstractSwipeableItemViewHolder {
