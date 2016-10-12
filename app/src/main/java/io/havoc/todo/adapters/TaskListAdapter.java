@@ -15,21 +15,22 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAct
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 
+import java.util.ArrayList;
+
 import io.havoc.todo.R;
-import io.havoc.todo.model.AbstractTaskProvider;
 import io.havoc.todo.util.LogUtil;
 
 public class TaskListAdapter
         extends RecyclerView.Adapter<TaskListAdapter.MyViewHolder>
         implements SwipeableItemAdapter<TaskListAdapter.MyViewHolder> {
 
-    private AbstractTaskProvider mProvider;
+    private ArrayList<Object> mList;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
 
-    public TaskListAdapter(AbstractTaskProvider dataProvider) {
-        mProvider = dataProvider;
+    public TaskListAdapter(ArrayList<Object> list) {
+        mList = list;
 
         mItemViewOnClickListener = new View.OnClickListener() {
             @Override
@@ -62,15 +63,6 @@ public class TaskListAdapter
         }
     }
 
-    @Override
-    public long getItemId(int position) {
-        return mProvider.getItem(position).getId();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return mProvider.getItem(position).getViewType();
-    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -81,7 +73,9 @@ public class TaskListAdapter
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final AbstractTaskProvider.Task item = mProvider.getItem(position);
+        //TODO, handle setting the RV item's layout here
+//        final AbstractTaskProvider.Task item = mList.getItem(position);
+        final Object item = mList.get(position);
 
         // set listeners
         // (if the item is *pinned*, click event comes to the itemView)
@@ -90,7 +84,7 @@ public class TaskListAdapter
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         // set text
-//        holder.mTextView.setText(item.getText());
+        holder.mTextView.setText(item.toString());
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
@@ -107,7 +101,7 @@ public class TaskListAdapter
 //                bgResId = R.drawable.bg_item_normal_state;
 //            }
 
-            holder.mContainer.setBackgroundResource(R.color.colorPrimary);
+            holder.mContainer.setBackgroundResource(R.color.white);
         }
 
         // set swiping properties
@@ -116,7 +110,7 @@ public class TaskListAdapter
 
     @Override
     public int getItemCount() {
-        return mProvider.getCount();
+        return mList.size();
     }
 
     @Override
@@ -172,10 +166,10 @@ public class TaskListAdapter
         //nothing
     }
 
-    interface EventListener {
+    public interface EventListener {
         void onItemRemoved(int position);
 
-        void onItemPinned(int position);
+//        void onItemPinned(int position);
 
         void onItemViewClicked(View v, boolean pinned);
     }
@@ -211,8 +205,6 @@ public class TaskListAdapter
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
-
-            AbstractTaskProvider.Task item = mAdapter.mProvider.getItem(mPosition);
         }
 
         @Override
@@ -244,7 +236,7 @@ public class TaskListAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
-            mAdapter.mProvider.removeItem(mPosition);
+            mAdapter.mList.remove(mPosition);
             mAdapter.notifyItemRemoved(mPosition);
         }
 

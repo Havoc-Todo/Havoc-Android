@@ -12,7 +12,5 @@ public class MainActivityPresenter extends TiPresenter<MainActivityView> {
     protected void onWakeUp() {
         super.onWakeUp();
         LogUtil.d("Presenter onWakeUp()");
-
-        getView().showList();
     }
 }
