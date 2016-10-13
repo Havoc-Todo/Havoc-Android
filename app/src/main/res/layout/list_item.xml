@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="top|start"
             android:fontFamily="sans-serif-medium"
-            android:text="Text here"
+            android:text="Dummy text data"
             android:textSize="16sp"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:gravity="start|center_vertical" />
