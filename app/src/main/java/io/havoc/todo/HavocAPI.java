@@ -9,7 +9,8 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 public interface HavocAPI {
-    String URI = "";
+    //URL for the server
+    String URI = "ec2-54-158-62-69.compute-1.amazonaws.com";
 
     /**
      * Creates a new task
