@@ -16,6 +16,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemView
 import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.havoc.todo.R;
 import io.havoc.todo.util.LogUtil;
@@ -24,12 +25,12 @@ public class TaskListAdapter
         extends RecyclerView.Adapter<TaskListAdapter.MyViewHolder>
         implements SwipeableItemAdapter<TaskListAdapter.MyViewHolder> {
 
-    private ArrayList<Object> mList;
+    private List<Object> mList;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
 
-    public TaskListAdapter(ArrayList<Object> list) {
+    public TaskListAdapter(List<Object> list) {
         mList = list;
 
         mItemViewOnClickListener = new View.OnClickListener() {

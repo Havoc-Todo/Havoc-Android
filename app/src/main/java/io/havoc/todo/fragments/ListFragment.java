@@ -18,7 +18,6 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import net.grandcentrix.thirtyinch.TiFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.havoc.todo.R;
@@ -32,7 +31,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
-    private ArrayList mList;
+    private List mList;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -69,7 +68,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 
                     @Override
                     public void onNext(List<Task> tasks) {
-
+                        mList = tasks;
                     }
                 });
     }
