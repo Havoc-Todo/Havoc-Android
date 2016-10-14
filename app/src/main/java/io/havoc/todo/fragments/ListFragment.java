@@ -28,7 +28,8 @@ import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
-    private List mList;
+    private List mListOfTasks;
+    private TaskListAdapter mTaskListAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -48,7 +49,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     
     @Override
     public void setTaskList(List<Task> tasks) {
-        //TODO 
+        mTaskListAdapter.setTasks(tasks);
     }
 
     @Override
@@ -73,23 +74,11 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
         //adapter
-        final TaskListAdapter taskAdapter = new TaskListAdapter(mList);
-        taskAdapter.setEventListener(new TaskListAdapter.EventListener() {
-            @Override
-            public void onItemRemoved(int position) {
-//                ((MainActivity) getActivity()).onItemRemoved(position);
-            }
-
-            @Override
-            public void onItemViewClicked(View v) {
-                onItemViewClick(v);
-            }
-        });
-
-        mAdapter = taskAdapter;
+        mTaskListAdapter = new TaskListAdapter();
+        mAdapter = mTaskListAdapter;
 
         // wrap for swiping
-        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(taskAdapter);
+        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mTaskListAdapter);
 
         final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
 

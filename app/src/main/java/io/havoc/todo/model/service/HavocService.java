@@ -3,14 +3,10 @@ package io.havoc.todo.model.service;
 
 import com.github.aurae.retrofit2.LoganSquareConverterFactory;
 
-import java.io.IOException;
 import java.util.List;
 
 import io.havoc.todo.model.Task;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -20,26 +16,15 @@ import rx.Observable;
 public class HavocService {
 
     //URL for the server
-    private static final String HAVOC_URI = "ec2-54-158-62-69.compute-1.amazonaws.com:3000";
+    private static final String HAVOC_URI = "http://ec2-54-158-62-69.compute-1.amazonaws.com:3000";
     private HavocAPI mHavocApi;
 
     public HavocService() {
         this(HAVOC_URI);
     }
 
-    public HavocService(String baseUrl) {
+    private HavocService(String baseUrl) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request()
-                        .newBuilder()
-                        .addHeader("Accept", "application/json")
-                        .addHeader("Content-Type", "application/json")
-                        .build();
-                return chain.proceed(request);
-            }
-        });
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

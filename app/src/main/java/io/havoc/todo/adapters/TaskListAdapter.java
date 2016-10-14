@@ -19,19 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.havoc.todo.R;
+import io.havoc.todo.model.Task;
 import io.havoc.todo.util.LogUtil;
 
 public class TaskListAdapter
         extends RecyclerView.Adapter<TaskListAdapter.MyViewHolder>
         implements SwipeableItemAdapter<TaskListAdapter.MyViewHolder> {
 
-    private List<Object> mList;
+    private List<Task> tasks;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
 
-    public TaskListAdapter(List<Object> list) {
-        mList = list;
+    public TaskListAdapter() {
+        tasks = new ArrayList<>();
 
         mItemViewOnClickListener = new View.OnClickListener() {
             @Override
@@ -64,6 +65,10 @@ public class TaskListAdapter
         }
     }
 
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+        notifyDataSetChanged();
+    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -74,7 +79,7 @@ public class TaskListAdapter
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final Object item = mList.get(position);
+        final Task item = tasks.get(position);
 
         // set listeners
         // (if the item is *pinned*, click event comes to the itemView)
@@ -109,7 +114,7 @@ public class TaskListAdapter
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return tasks.size();
     }
 
     @Override
@@ -118,7 +123,7 @@ public class TaskListAdapter
          * TODO getItemId()
          * Will have to tie in some unique id with a given task; use that to specify tasks
           */
-        return mList.get(position).hashCode();
+        return tasks.get(position).taskId.hashCode();
     }
 
     @Override
@@ -242,7 +247,7 @@ public class TaskListAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
-            mAdapter.mList.remove(mPosition);
+            mAdapter.tasks.remove(mPosition);
             mAdapter.notifyItemRemoved(mPosition);
         }
 

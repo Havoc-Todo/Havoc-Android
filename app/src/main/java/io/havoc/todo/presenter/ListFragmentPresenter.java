@@ -35,7 +35,6 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
      * Generates a list of Tasks
      *
      * @param havocService Retrofit + HavocAPI needed for transaction to occur
-     * @return the list of Tasks
      */
     private void loadTaskList(HavocService havocService) {
         havocService.getHavocAPI()
