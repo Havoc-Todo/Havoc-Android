@@ -19,6 +19,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import net.grandcentrix.thirtyinch.TiFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.havoc.todo.R;
 import io.havoc.todo.adapters.TaskListAdapter;
@@ -31,6 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
+    private ArrayList mList;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -54,7 +56,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
                 .getAllTasks("", "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Task>() {
+                .subscribe(new Observer<List<Task>>() {
                     @Override
                     public void onCompleted() {
 
@@ -66,7 +68,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
                     }
 
                     @Override
-                    public void onNext(Task task) {
+                    public void onNext(List<Task> tasks) {
 
                     }
                 });
@@ -93,14 +95,8 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         // swipe manager
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
-        ArrayList<Object> list = new ArrayList<>();
-        list.add("Walk the walk");
-        list.add("Talk the talk");
-        list.add("Complete overwhelming workload");
-        list.add("Browse Reddit");
-
         //adapter
-        final TaskListAdapter taskAdapter = new TaskListAdapter(list);
+        final TaskListAdapter taskAdapter = new TaskListAdapter(mList);
         taskAdapter.setEventListener(new TaskListAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {

@@ -21,10 +21,13 @@ public class HavocService {
 
     //URL for the server
     private static final String HAVOC_URI = "ec2-54-158-62-69.compute-1.amazonaws.com";
-
     private HavocAPI mHavocApi;
 
     public HavocService() {
+        this(HAVOC_URI);
+    }
+
+    public HavocService(String baseUrl) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.interceptors().add(new Interceptor() {
             @Override
@@ -39,7 +42,7 @@ public class HavocService {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HAVOC_URI)
+                .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .addConverterFactory(LoganSquareConverterFactory.create())
                 .build();
@@ -89,7 +92,7 @@ public class HavocService {
          * @return list of all Tasks from the specified User
          */
         @GET("api/task/read/{user_id}/{task_id}")
-        Observable<Task> getAllTasks(@Path("user_id") String userId, @Path("task_id") String taskId);
+        Observable<List<Task>> getAllTasks(@Path("user_id") String userId, @Path("task_id") String taskId);
 
 //        /**
 //         * Gets a specified Task created by a specified user

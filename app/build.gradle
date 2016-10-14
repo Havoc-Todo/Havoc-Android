@@ -38,7 +38,7 @@ dependencies {
     //ThirtyInch MVP library
     compile "net.grandcentrix.thirtyinch:thirtyinch:0.7.1"
 
-    //Retrofit
+    //Retrofit and Retrofit RxJava
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
 
     //LoganSquare (JSON parser)
