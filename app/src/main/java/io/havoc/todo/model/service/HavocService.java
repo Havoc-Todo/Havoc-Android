@@ -1,4 +1,4 @@
-package io.havoc.todo.service;
+package io.havoc.todo.model.service;
 
 
 import com.github.aurae.retrofit2.LoganSquareConverterFactory;
@@ -6,6 +6,7 @@ import com.github.aurae.retrofit2.LoganSquareConverterFactory;
 import java.io.IOException;
 import java.util.List;
 
+import io.havoc.todo.model.Task;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -53,10 +54,10 @@ public class HavocService {
     /**
      * RESTful API for accessing data on the backend server
      */
-    interface HavocAPI {
+    public interface HavocAPI {
 
         /**
-         * Creates a new task
+         * Creates a new Task
          *
          * @return status of whether or not the transaction was successful and the task that was created
          */
@@ -64,16 +65,16 @@ public class HavocService {
         Observable<List<Object>> createNewTask();
 
         /**
-         * Deletes a specified task using the taskId
+         * Deletes a specified Task using the taskId
          *
          * @param taskID of the task
          * @return status of transaction
          */
         @POST("api/task/delete/{task_id}")
-        Observable<Boolean> deleteTask(@Path("task_id") int taskID);
+        Observable<Boolean> deleteTask(@Path("task_id") String taskID);
 
         /**
-         * Updates a task
+         * Updates a Task
          *
          * @return status of whether or not the transaction was successful and the task that was updated
          */
@@ -81,15 +82,24 @@ public class HavocService {
         Observable<List<Object>> updateTask();
 
         /**
-         * Gets all tasks created by a specified user
-         * If a taskId is specified, then this will get that specific task
+         * Gets all Tasks by a specified User
          *
-         * @param USER_ID of the user
-         * @param taskId  of the task (optional)
-         * @return list of all tasks
+         * @param userId of the user
+         * @param taskId of the Task
+         * @return list of all Tasks from the specified User
          */
         @GET("api/task/read/{user_id}/{task_id}")
-        Observable<List<Object>> getTasks(@Path("user_id") int USER_ID, @Path("task_id") int taskId);
+        Observable<Task> getAllTasks(@Path("user_id") String userId, @Path("task_id") String taskId);
+
+//        /**
+//         * Gets a specified Task created by a specified user
+//         *
+//         * @param userId of the user
+//         * @param taskId of the Task
+//         * @return Task that was requested
+//         */
+//        @GET("api/task/read/{user_id}/{task_id}")
+//        Observable<Task> getTask(@Path("user_id") String userId, @Path("task_id") String taskId);
     }
 }
 

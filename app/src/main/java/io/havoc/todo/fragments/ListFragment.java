@@ -2,8 +2,8 @@ package io.havoc.todo.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +16,21 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeMana
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
+import net.grandcentrix.thirtyinch.TiFragment;
+
 import java.util.ArrayList;
 
 import io.havoc.todo.R;
 import io.havoc.todo.adapters.TaskListAdapter;
+import io.havoc.todo.model.Task;
+import io.havoc.todo.model.service.HavocService;
+import io.havoc.todo.presenter.ListFragmentPresenter;
+import io.havoc.todo.view.ListFragmentView;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -31,6 +40,36 @@ public class ListFragment extends Fragment {
 
     public ListFragment() {
         super();
+    }
+
+    @NonNull
+    @Override
+    public ListFragmentPresenter providePresenter() {
+        return new ListFragmentPresenter(new HavocService());
+    }
+
+    @Override
+    public void loadTaskList(HavocService havocService) {
+        havocService.getHavocAPI()
+                .getAllTasks("", "")
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Task>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Task task) {
+
+                    }
+                });
     }
 
     @Override

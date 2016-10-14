@@ -1,4 +1,4 @@
-package io.havoc.todo.activities;
+package io.havoc.todo.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +8,6 @@ import net.grandcentrix.thirtyinch.TiActivity;
 import io.havoc.todo.R;
 import io.havoc.todo.fragments.ListFragment;
 import io.havoc.todo.presenter.MainActivityPresenter;
-import io.havoc.todo.view.MainActivityView;
 
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 

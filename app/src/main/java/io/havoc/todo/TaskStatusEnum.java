@@ -4,6 +4,7 @@ package io.havoc.todo;
 public enum TaskStatusEnum {
 
     DONE("Done"),
+    ARCHIVED("Archived"),
     INCOMPLETE("Incomplete");
 
     //String the TaskStatusEnum is mapped to
