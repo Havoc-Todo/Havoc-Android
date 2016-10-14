@@ -18,13 +18,15 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.util.LogUtil;
 
 public class TaskListAdapter
-        extends RecyclerView.Adapter<TaskListAdapter.MyViewHolder>
-        implements SwipeableItemAdapter<TaskListAdapter.MyViewHolder> {
+        extends RecyclerView.Adapter<TaskListAdapter.ViewHolder>
+        implements SwipeableItemAdapter<TaskListAdapter.ViewHolder> {
 
     private List<Task> tasks;
     private EventListener mEventListener;
@@ -34,19 +36,9 @@ public class TaskListAdapter
     public TaskListAdapter() {
         tasks = new ArrayList<>();
 
-        mItemViewOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemViewClick(v);
-            }
-        };
+        mItemViewOnClickListener = v -> onItemViewClick(v);
 
-        mSwipeableViewContainerOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSwipeableViewContainerClick(v);
-            }
-        };
+        mSwipeableViewContainerOnClickListener = v -> onSwipeableViewContainerClick(v);
 
         // SwipeableItemAdapter requires stable ID, and also
         // have to implement the getItemId() method appropriately.
@@ -71,14 +63,14 @@ public class TaskListAdapter
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.list_item, parent, false);
-        return new MyViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final Task item = tasks.get(position);
 
         // set listeners
@@ -88,7 +80,7 @@ public class TaskListAdapter
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         // set text
-        holder.mTextView.setText(item.toString());
+        holder.mTextView.setText(item.name);
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
@@ -127,12 +119,12 @@ public class TaskListAdapter
     }
 
     @Override
-    public int onGetSwipeReactionType(MyViewHolder holder, int position, int x, int y) {
+    public int onGetSwipeReactionType(ViewHolder holder, int position, int x, int y) {
         return Swipeable.REACTION_CAN_SWIPE_BOTH_H;
     }
 
     @Override
-    public void onSetSwipeBackground(MyViewHolder holder, int position, int type) {
+    public void onSetSwipeBackground(ViewHolder holder, int position, int type) {
         int bgRes = 0;
         switch (type) {
             case Swipeable.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND:
@@ -150,7 +142,7 @@ public class TaskListAdapter
     }
 
     @Override
-    public SwipeResultAction onSwipeItem(MyViewHolder holder, final int position, int result) {
+    public SwipeResultAction onSwipeItem(ViewHolder holder, final int position, int result) {
         LogUtil.d("onSwipeItem(position = " + position + ", result = " + result + ")");
 
         switch (result) {
@@ -185,14 +177,15 @@ public class TaskListAdapter
         void onItemViewClicked(View v);
     }
 
-    static class MyViewHolder extends AbstractSwipeableItemViewHolder {
+    static class ViewHolder extends AbstractSwipeableItemViewHolder {
+        @BindView(R.id.container)
         FrameLayout mContainer;
+        @BindView(android.R.id.text1)
         TextView mTextView;
 
-        public MyViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
-            mContainer = (FrameLayout) v.findViewById(R.id.container);
-            mTextView = (TextView) v.findViewById(android.R.id.text1);
+            ButterKnife.bind(this, v);
         }
 
         @Override

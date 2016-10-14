@@ -6,7 +6,6 @@ import com.github.aurae.retrofit2.LoganSquareConverterFactory;
 import java.util.List;
 
 import io.havoc.todo.model.Task;
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
@@ -26,11 +25,8 @@ public class HavocService {
     }
 
     private HavocService(String baseUrl) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(LoganSquareConverterFactory.create())
                 .build();
