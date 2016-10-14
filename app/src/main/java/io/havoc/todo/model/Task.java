@@ -1,6 +1,7 @@
 package io.havoc.todo.model;
 
 import com.bluelinelabs.logansquare.annotation.JsonField;
+import com.bluelinelabs.logansquare.annotation.JsonObject;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import io.havoc.todo.TaskStatusEnum;
 /**
  * POJO Task
  */
+@JsonObject
 public class Task {
 
     /**
