@@ -20,7 +20,7 @@ import rx.Observable;
 public class HavocService {
 
     //URL for the server
-    private static final String HAVOC_URI = "ec2-54-158-62-69.compute-1.amazonaws.com";
+    private static final String HAVOC_URI = "ec2-54-158-62-69.compute-1.amazonaws.com:3000";
     private HavocAPI mHavocApi;
 
     public HavocService() {
