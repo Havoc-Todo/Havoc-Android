@@ -28,7 +28,6 @@ import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
-    private List mListOfTasks;
     private TaskListAdapter mTaskListAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
