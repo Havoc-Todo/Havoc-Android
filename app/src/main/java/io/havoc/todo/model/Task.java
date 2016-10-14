@@ -12,7 +12,7 @@ import io.havoc.todo.TaskStatusEnum;
 /**
  * POJO Task
  */
-@JsonObject
+@JsonObject(fieldDetectionPolicy = JsonObject.FieldDetectionPolicy.NONPRIVATE_FIELDS)
 public class Task {
 
     /**
@@ -40,6 +40,7 @@ public class Task {
      * Priority of the Task
      * 1 = LOW, 2 = MEDIUM, 3 = HIGH
      */
+    @JsonField(typeConverter = PriorityEnumIntConverter.class)
     public TaskPriorityEnum priority;
 
     /**
@@ -62,6 +63,7 @@ public class Task {
      * Status of the Task
      * DONE = "Done", INCOMPLETE = "Incomplete"
      */
+    @JsonField(typeConverter = StatusEnumStringConverter.class)
     public TaskStatusEnum status;
 
     /**
@@ -69,4 +71,19 @@ public class Task {
      * Just a basic List of Strings
      */
     public List<Subtask> subtasks;
+
+    public Task(String name, String taskId, String category, int indexInList,
+                TaskPriorityEnum priority, String description, Date dateDue,
+                String userId, TaskStatusEnum status, List<Subtask> subtasks) {
+        this.name = name;
+        this.taskId = taskId;
+        this.category = category;
+        this.indexInList = indexInList;
+        this.priority = priority;
+        this.description = description;
+        this.dateDue = dateDue;
+        this.userId = userId;
+        this.status = status;
+        this.subtasks = subtasks;
+    }
 }
