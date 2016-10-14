@@ -44,7 +44,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @NonNull
     @Override
     public ListFragmentPresenter providePresenter() {
-        return new ListFragmentPresenter(new HavocService());
+        return new ListFragmentPresenter(HavocService.getInstance());
     }
     
     @Override

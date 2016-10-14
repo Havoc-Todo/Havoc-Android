@@ -12,11 +12,10 @@ public class Havoc extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mHavocService = new HavocService();
+        initSingletons();
     }
 
-    public HavocService getHavocService() {
-        return mHavocService;
+    protected void initSingletons() {
+        HavocService.initInstance();
     }
 }

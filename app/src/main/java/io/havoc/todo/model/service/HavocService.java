@@ -17,9 +17,10 @@ public class HavocService {
 
     //URL for the server
     private static final String HAVOC_URI = "http://ec2-54-158-62-69.compute-1.amazonaws.com:3000";
+    private static HavocService instance;
     private HavocAPI mHavocApi;
 
-    public HavocService() {
+    private HavocService() {
         this(HAVOC_URI);
     }
 
@@ -33,6 +34,24 @@ public class HavocService {
                 .build();
 
         mHavocApi = retrofit.create(HavocAPI.class);
+    }
+
+    /**
+     * Gets the instance of HavocService
+     *
+     * @return instance of HavocService
+     */
+    public static HavocService getInstance() {
+        return instance;
+    }
+
+    /**
+     * Creates an instance of HavocService if one does not already exist
+     */
+    public static void initInstance() {
+        if (instance == null) {
+            instance = new HavocService();
+        }
     }
 
     public HavocAPI getHavocAPI() {
