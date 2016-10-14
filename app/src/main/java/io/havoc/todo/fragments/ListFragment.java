@@ -26,9 +26,6 @@ import io.havoc.todo.model.Task;
 import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
     private List mList;
@@ -48,29 +45,10 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     public ListFragmentPresenter providePresenter() {
         return new ListFragmentPresenter(new HavocService());
     }
-
+    
     @Override
-    public void loadTaskList(HavocService havocService) {
-        havocService.getHavocAPI()
-                .getAllTasks("", "")
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        mList = tasks;
-                    }
-                });
+    public void setTaskList(List<Task> tasks) {
+        //TODO 
     }
 
     @Override

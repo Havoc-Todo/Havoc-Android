@@ -3,12 +3,18 @@ package io.havoc.todo.presenter;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import java.util.List;
+
+import io.havoc.todo.model.Task;
 import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.view.ListFragmentView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
 
     private HavocService havocService;
+    private List<Task> mListOfTasks;
 
     public ListFragmentPresenter(HavocService havocService) {
         this.havocService = havocService;
@@ -17,6 +23,28 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
     @Override
     public void onWakeUp() {
         super.onWakeUp();
-        getView().loadTaskList(havocService);
+
+        if (mListOfTasks == null) {
+            loadTaskList(havocService);
+        } else {
+            getView().setTaskList(mListOfTasks);
+        }
+    }
+
+    /**
+     * Generates a list of Tasks
+     *
+     * @param havocService Retrofit + HavocAPI needed for transaction to occur
+     * @return the list of Tasks
+     */
+    private void loadTaskList(HavocService havocService) {
+        havocService.getHavocAPI()
+                .getAllTasks("", "")
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mListOfTasks -> {
+                    this.mListOfTasks = mListOfTasks;
+                    getView().setTaskList(mListOfTasks);
+                });
     }
 }
