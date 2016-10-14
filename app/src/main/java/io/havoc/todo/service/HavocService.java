@@ -37,13 +37,13 @@ public class HavocService {
             }
         });
 
-        Retrofit restAdapter = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(HAVOC_URI)
                 .client(okHttpClient)
                 .addConverterFactory(LoganSquareConverterFactory.create())
                 .build();
 
-        mHavocApi = restAdapter.create(HavocAPI.class);
+        mHavocApi = retrofit.create(HavocAPI.class);
     }
 
     public HavocAPI getHavocAPI() {
