@@ -104,7 +104,7 @@ public class HavocService {
          * @return list of all Tasks from the specified User
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @GET("api/task/read/{user_id}/{task_id}")
+        @GET("api/task/read/{user_id}")
         Observable<List<Task>> getAllTasks(@Path("user_id") String userId);
 
 //        /**
