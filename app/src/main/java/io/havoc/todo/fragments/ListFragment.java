@@ -23,7 +23,6 @@ import java.util.List;
 import io.havoc.todo.R;
 import io.havoc.todo.adapters.TaskListAdapter;
 import io.havoc.todo.model.Task;
-import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
 
@@ -43,7 +42,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @NonNull
     @Override
     public ListFragmentPresenter providePresenter() {
-        return new ListFragmentPresenter(HavocService.getInstance());
+        return new ListFragmentPresenter();
     }
     
     @Override

@@ -14,13 +14,8 @@ import rx.schedulers.Schedulers;
 
 public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
 
-    private HavocService havocService;
     private List<Task> mListOfTasks;
     private RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
-
-    public ListFragmentPresenter(HavocService havocService) {
-        this.havocService = havocService;
-    }
 
     @Override
     public void onWakeUp() {
@@ -37,7 +32,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
      * Generates a list of Tasks
      */
     private void loadTaskList() {
-        rxHelper.manageSubscription(havocService.getHavocAPI().getAllTasks("57a7bd24-ddf0-5c24-9091-ba331e486dc7")
+        rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks("57a7bd24-ddf0-5c24-9091-ba331e486dc7")
                 .subscribeOn(Schedulers.newThread())
                 .compose(RxTiPresenterUtils.deliverLatestToView(this))
                 .subscribe(mListOfTasks -> {

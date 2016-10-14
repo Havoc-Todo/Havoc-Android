@@ -7,11 +7,10 @@ import io.havoc.todo.model.service.HavocService;
 
 public class Havoc extends Application {
 
-    private HavocService mHavocService;
-
     @Override
     public void onCreate() {
         super.onCreate();
+
         initSingletons();
     }
 

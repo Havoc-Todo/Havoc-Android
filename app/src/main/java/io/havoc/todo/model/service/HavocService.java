@@ -42,6 +42,9 @@ public class HavocService {
      * @return instance of HavocService
      */
     public static HavocService getInstance() {
+        if (instance == null) {
+            instance = new HavocService();
+        }
         return instance;
     }
 
