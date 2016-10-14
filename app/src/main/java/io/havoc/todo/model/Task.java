@@ -27,6 +27,12 @@ public class Task {
     public String taskId;
 
     /**
+     * The unique identifier of the User which this Task belongs to
+     */
+    @JsonField(name = "user")
+    public String userId;
+
+    /**
      * Category of Task (School, Work, etc.)
      */
     public String category;
@@ -35,13 +41,6 @@ public class Task {
      * Current position of the Task in its parent list
      */
     public int indexInList;
-
-    /**
-     * Priority of the Task
-     * 1 = LOW, 2 = MEDIUM, 3 = HIGH
-     */
-    @JsonField(typeConverter = PriorityEnumIntConverter.class)
-    public TaskPriorityEnum priority;
 
     /**
      * Additional notes about the Task
@@ -54,10 +53,11 @@ public class Task {
     public Date dateDue;
 
     /**
-     * The unique identifier of the User which this Task belongs to
+     * Priority of the Task
+     * 1 = LOW, 2 = MEDIUM, 3 = HIGH
      */
-    @JsonField(name = "user")
-    public String userId;
+    @JsonField(typeConverter = PriorityEnumIntConverter.class)
+    public TaskPriorityEnum priority;
 
     /**
      * Status of the Task
@@ -72,18 +72,18 @@ public class Task {
      */
     public List<Subtask> subtasks;
 
-    public Task(String name, String taskId, String category, int indexInList,
-                TaskPriorityEnum priority, String description, Date dateDue,
-                String userId, TaskStatusEnum status, List<Subtask> subtasks) {
-        this.name = name;
-        this.taskId = taskId;
-        this.category = category;
-        this.indexInList = indexInList;
-        this.priority = priority;
-        this.description = description;
-        this.dateDue = dateDue;
-        this.userId = userId;
-        this.status = status;
-        this.subtasks = subtasks;
-    }
+//    public Task(String name, String taskId, String category, int indexInList,
+//                TaskPriorityEnum priority, String description, Date dateDue,
+//                String userId, TaskStatusEnum status, List<Subtask> subtasks) {
+//        this.name = name;
+//        this.userId = userId;
+//        this.taskId = taskId;
+//        this.category = category;
+//        this.indexInList = indexInList;
+//        this.priority = priority;
+//        this.description = description;
+//        this.dateDue = dateDue;
+//        this.status = status;
+//        this.subtasks = subtasks;
+//    }
 }

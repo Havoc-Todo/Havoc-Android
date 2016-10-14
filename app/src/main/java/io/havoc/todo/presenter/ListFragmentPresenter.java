@@ -38,6 +38,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                 .subscribe(mListOfTasks -> {
                     this.mListOfTasks = mListOfTasks;
                     getView().setTaskList(mListOfTasks);
+//                    LogUtil.v("Task name: " + mListOfTasks.get(0).name);
                 })
         );
     }
