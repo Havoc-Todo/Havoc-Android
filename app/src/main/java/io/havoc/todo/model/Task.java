@@ -68,5 +68,5 @@ public class Task {
      * Subtasks of the Task
      * Just a basic List of Strings
      */
-    public List<String> subtasks;
+    public List<Subtask> subtasks;
 }

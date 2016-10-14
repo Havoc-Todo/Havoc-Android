@@ -73,11 +73,10 @@ public class HavocService {
          * Gets all Tasks by a specified User
          *
          * @param userId of the user
-         * @param taskId of the Task
          * @return list of all Tasks from the specified User
          */
         @GET("api/task/read/{user_id}/{task_id}")
-        Observable<List<Task>> getAllTasks(@Path("user_id") String userId, @Path("task_id") String taskId);
+        Observable<List<Task>> getAllTasks(@Path("user_id") String userId);
 
 //        /**
 //         * Gets a specified Task created by a specified user
