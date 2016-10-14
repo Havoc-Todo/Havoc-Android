@@ -9,6 +9,7 @@ import io.havoc.todo.model.Task;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -69,6 +70,7 @@ public class HavocService {
          *
          * @return status of whether or not the transaction was successful and the task that was created
          */
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("api/task/create")
         Observable<List<Object>> createNewTask();
 
@@ -78,6 +80,7 @@ public class HavocService {
          * @param taskID of the task
          * @return status of transaction
          */
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("api/task/delete/{task_id}")
         Observable<Boolean> deleteTask(@Path("task_id") String taskID);
 
@@ -86,6 +89,7 @@ public class HavocService {
          *
          * @return status of whether or not the transaction was successful and the task that was updated
          */
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("api/task/update")
         Observable<List<Object>> updateTask();
 
@@ -95,6 +99,7 @@ public class HavocService {
          * @param userId of the user
          * @return list of all Tasks from the specified User
          */
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @GET("api/task/read/{user_id}/{task_id}")
         Observable<List<Task>> getAllTasks(@Path("user_id") String userId);
 
