@@ -1,6 +1,9 @@
 package io.havoc.todo.model;
 
+import com.bluelinelabs.logansquare.annotation.JsonField;
+
 import java.util.Date;
+import java.util.List;
 
 import io.havoc.todo.TaskPriorityEnum;
 import io.havoc.todo.TaskStatusEnum;
@@ -18,6 +21,7 @@ public class Task {
     /**
      * Unique identifier for the Task
      */
+    @JsonField(name = "t_id")
     public String taskId;
 
     /**
@@ -49,6 +53,7 @@ public class Task {
     /**
      * The unique identifier of the User which this Task belongs to
      */
+    @JsonField(name = "user")
     public String userId;
 
     /**
@@ -56,4 +61,10 @@ public class Task {
      * DONE = "Done", INCOMPLETE = "Incomplete"
      */
     public TaskStatusEnum status;
+
+    /**
+     * Subtasks of the Task
+     * Just a basic List of Strings
+     */
+    public List<String> subtasks;
 }
