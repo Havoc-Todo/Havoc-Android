@@ -8,6 +8,7 @@ import java.util.List;
 import io.havoc.todo.model.Task;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -30,6 +31,7 @@ public class HavocService {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(LoganSquareConverterFactory.create())
                 .build();
 
