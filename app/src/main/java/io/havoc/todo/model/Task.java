@@ -9,6 +9,7 @@ import io.havoc.todo.TaskStatusEnum;
  * POJO Task
  */
 public class Task {
+
     /**
      * Name of the Task
      */

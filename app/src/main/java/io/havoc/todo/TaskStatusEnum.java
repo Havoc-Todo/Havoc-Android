@@ -3,8 +3,8 @@ package io.havoc.todo;
 
 public enum TaskStatusEnum {
 
-    DONE ("Done"),
-    INCOMPLETE ("Incomplete");
+    DONE("Done"),
+    INCOMPLETE("Incomplete");
 
     //String the TaskStatusEnum is mapped to
     private String status;
@@ -15,6 +15,7 @@ public enum TaskStatusEnum {
 
     /**
      * Getter for the status in String form
+     *
      * @return the status as a String
      */
     public String getStatus() {
