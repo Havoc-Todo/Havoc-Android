@@ -13,6 +13,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class HavocService {
 
@@ -26,9 +27,12 @@ public class HavocService {
     }
 
     private HavocService(String baseUrl) {
+        //So network calls are async
+        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(LoganSquareConverterFactory.create())
                 .build();
 
