@@ -30,7 +30,7 @@ public class HavocService {
         //So network calls are async
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
-        Retrofit retrofit = new Retrofit.Builder()
+        final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(LoganSquareConverterFactory.create())
