@@ -22,7 +22,6 @@ public class NewTaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.md_light_blue_600));
 
         toolbar.setNavigationOnClickListener(view -> this.finish());
     }

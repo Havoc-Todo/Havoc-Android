@@ -17,6 +17,7 @@
             style="@style/ToolbarStyle"
             android:background="@color/colorPrimaryLight"
             app:title="@string/toolbar_new_task_title"
+            app:navigationIcon="@drawable/back"
             app:titleTextColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
