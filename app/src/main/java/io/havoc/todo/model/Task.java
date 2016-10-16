@@ -1,7 +1,6 @@
 package io.havoc.todo.model;
 
-import com.bluelinelabs.logansquare.annotation.JsonField;
-import com.bluelinelabs.logansquare.annotation.JsonObject;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +11,6 @@ import io.havoc.todo.TaskStatusEnum;
 /**
  * POJO Task
  */
-@JsonObject(fieldDetectionPolicy = JsonObject.FieldDetectionPolicy.NONPRIVATE_FIELDS)
 public class Task {
 
     /**
@@ -23,13 +21,13 @@ public class Task {
     /**
      * Unique identifier for the Task
      */
-    @JsonField(name = "t_id")
+    @SerializedName("t_id")
     public String taskId;
 
     /**
      * The unique identifier of the User which this Task belongs to
      */
-    @JsonField(name = "user")
+    @SerializedName("user")
     public String userId;
 
     /**
@@ -56,14 +54,12 @@ public class Task {
      * Priority of the Task
      * 1 = LOW, 2 = MEDIUM, 3 = HIGH
      */
-    @JsonField(typeConverter = PriorityEnumIntConverter.class)
     public TaskPriorityEnum priority;
 
     /**
      * Status of the Task
      * DONE = "Done", INCOMPLETE = "Incomplete"
      */
-    @JsonField(typeConverter = StatusEnumStringConverter.class)
     public TaskStatusEnum status;
 
     /**

@@ -1,13 +1,14 @@
 package io.havoc.todo.model.service;
 
 
-import com.github.aurae.retrofit2.LoganSquareConverterFactory;
-
 import java.util.List;
 
 import io.havoc.todo.model.Task;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -18,7 +19,7 @@ import rx.schedulers.Schedulers;
 public class HavocService {
 
     //URL for the server
-    private static final String HAVOC_URI = "http://ec2-54-158-62-69.compute-1.amazonaws.com:3000/";
+    private static final String HAVOC_URI = "http://ec2-54-158-62-69.compute-1.amazonaws.com:3000/api/";
     private static HavocService instance;
     private HavocAPI mHavocApi;
 
@@ -30,10 +31,15 @@ public class HavocService {
         //So network calls are async
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(client)
                 .addCallAdapterFactory(rxAdapter)
-                .addConverterFactory(LoganSquareConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         mHavocApi = retrofit.create(HavocAPI.class);
@@ -75,7 +81,7 @@ public class HavocService {
          * @return status of whether or not the transaction was successful and the task that was created
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("api/task/create/")
+        @POST("task/create/")
         Observable<List<Object>> createNewTask();
 
         /**
@@ -85,7 +91,7 @@ public class HavocService {
          * @return status of transaction
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("api/task/delete/{task_id}/")
+        @POST("task/delete/{task_id}/")
         Observable<Boolean> deleteTask(@Path("task_id") String taskID);
 
         /**
@@ -94,7 +100,7 @@ public class HavocService {
          * @return status of whether or not the transaction was successful and the task that was updated
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("api/task/update/")
+        @POST("task/update/")
         Observable<List<Object>> updateTask();
 
         /**
@@ -104,7 +110,7 @@ public class HavocService {
          * @return list of all Tasks from the specified User
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @GET("api/task/read/{user_id}/")
+        @GET("task/read/{user_id}/")
         Observable<List<Task>> getAllTasks(@Path("user_id") String userId);
 
 //        /**
@@ -114,7 +120,7 @@ public class HavocService {
 //         * @param taskId of the Task
 //         * @return Task that was requested
 //         */
-//        @GET("api/task/read/{user_id}/{task_id}/")
+//        @GET("task/read/{user_id}/{task_id}/")
 //        Observable<Task> getTask(@Path("user_id") String userId, @Path("task_id") String taskId);
     }
 }

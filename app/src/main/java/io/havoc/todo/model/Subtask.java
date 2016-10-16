@@ -1,11 +1,8 @@
 package io.havoc.todo.model;
 
-import com.bluelinelabs.logansquare.annotation.JsonObject;
-
 /**
  * POJO Subtask
  */
-@JsonObject
 public class Subtask {
 
     /**
