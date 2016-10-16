@@ -98,6 +98,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_save"
         android:layout_width="@dimen/fab_normal_size"
         android:layout_height="@dimen/fab_normal_size"
         android:layout_alignParentBottom="true"

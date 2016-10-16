@@ -16,8 +16,8 @@ import io.havoc.todo.view.MainActivityView;
 
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 
-    private static final String FRAGMENT_LIST_VIEW = "List view";
-    @BindView(R.id.floating_action_button)
+    //    private static final String FRAGMENT_LIST_VIEW = "List view";
+    @BindView(R.id.fab_add)
     public FloatingActionButton newTaskFAB;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
