@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 
-import io.havoc.todo.TaskPriorityEnum;
-import io.havoc.todo.TaskStatusEnum;
-
 /**
  * POJO Task
  */

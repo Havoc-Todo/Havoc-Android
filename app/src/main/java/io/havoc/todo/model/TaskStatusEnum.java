@@ -1,4 +1,4 @@
-package io.havoc.todo;
+package io.havoc.todo.model;
 
 
 public enum TaskStatusEnum {
