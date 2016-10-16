@@ -63,6 +63,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
+    //FlexLayout
+//    compile 'com.github.mmin18:flexlayout:1.2.6'
+
     //Testing
     testCompile 'junit:junit:4.12'
 }

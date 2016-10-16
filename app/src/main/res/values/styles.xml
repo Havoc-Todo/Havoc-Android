@@ -13,7 +13,10 @@
         <item name="android:windowBackground">@color/md_grey_50</item>
     </style>
 
-    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:elevation">4dp</item>
+    <style name="ToolbarStyle" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="android:layout_height">@dimen/toolbar_normal_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/toolbar_normal_height</item>
+        <item name="android:elevation">@dimen/toolbar_elevation</item>
     </style>
 </resources>
