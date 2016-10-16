@@ -2,5 +2,16 @@
     <string name="app_name">Havoc</string>
 
     <!--New Task-->
+    <string name="toolbar_new_task_title">New task</string>
     <string name="hint_task_name">Name</string>
+    <string name="hint_task_description">Description</string>
+    <string name="hint_task_category">Category</string>
+    <string name="hint_task_subtasks">Subtasks</string>
+    <string name="hint_task_due_date">Due date</string>
+    <string name="hint_task_priority">Priority</string>
+
+    <!--Priority levels-->
+    <string name="priority_high">High</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
 </resources>
