@@ -8,6 +8,7 @@ import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
 import java.util.List;
 
 import io.havoc.todo.model.Task;
+import io.havoc.todo.model.responses.GetAllTasksResponse;
 import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.util.LogUtil;
 import io.havoc.todo.view.ListFragmentView;
@@ -17,6 +18,7 @@ import rx.schedulers.Schedulers;
 public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
 
     private List<Task> mListOfTasks;
+    private GetAllTasksResponse mGetAllTasksResponse;
     private RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
 
     @Override
@@ -40,11 +42,11 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxTiPresenterUtils.deliverLatestToView(this))
-                .subscribe(mListOfTasks -> {
-                    this.mListOfTasks = mListOfTasks;
-                    getView().setTaskList(mListOfTasks);
+                .subscribe(mGetAllTasksResponse -> {
+                    this.mGetAllTasksResponse = mGetAllTasksResponse;
+                    getView().setTaskList(mGetAllTasksResponse.getTasks());
                 }, throwable -> {
-                    LogUtil.e("Error with something.");
+                    LogUtil.e(throwable.getCause().getMessage());
                 })
         );
     }

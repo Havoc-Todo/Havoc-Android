@@ -3,7 +3,7 @@ package io.havoc.todo.model.service;
 
 import java.util.List;
 
-import io.havoc.todo.model.Task;
+import io.havoc.todo.model.responses.GetAllTasksResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -111,7 +111,7 @@ public class HavocService {
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @GET("task/read/{user_id}/")
-        Observable<List<Task>> getAllTasks(@Path("user_id") String userId);
+        Observable<GetAllTasksResponse> getAllTasks(@Path("user_id") String userId);
 
 //        /**
 //         * Gets a specified Task created by a specified user
