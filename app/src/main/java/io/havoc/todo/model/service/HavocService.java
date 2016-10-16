@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
 public class HavocService {
 
     //URL for the server
-    private static final String HAVOC_URI = "http://ec2-54-158-62-69.compute-1.amazonaws.com:3000";
+    private static final String HAVOC_URI = "http://ec2-54-158-62-69.compute-1.amazonaws.com:3000/";
     private static HavocService instance;
     private HavocAPI mHavocApi;
 
@@ -75,7 +75,7 @@ public class HavocService {
          * @return status of whether or not the transaction was successful and the task that was created
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("api/task/create")
+        @POST("api/task/create/")
         Observable<List<Object>> createNewTask();
 
         /**
@@ -85,7 +85,7 @@ public class HavocService {
          * @return status of transaction
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("api/task/delete/{task_id}")
+        @POST("api/task/delete/{task_id}/")
         Observable<Boolean> deleteTask(@Path("task_id") String taskID);
 
         /**
@@ -94,7 +94,7 @@ public class HavocService {
          * @return status of whether or not the transaction was successful and the task that was updated
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("api/task/update")
+        @POST("api/task/update/")
         Observable<List<Object>> updateTask();
 
         /**
@@ -104,7 +104,7 @@ public class HavocService {
          * @return list of all Tasks from the specified User
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @GET("api/task/read/{user_id}")
+        @GET("api/task/read/{user_id}/")
         Observable<List<Task>> getAllTasks(@Path("user_id") String userId);
 
 //        /**
@@ -114,7 +114,7 @@ public class HavocService {
 //         * @param taskId of the Task
 //         * @return Task that was requested
 //         */
-//        @GET("api/task/read/{user_id}/{task_id}")
+//        @GET("api/task/read/{user_id}/{task_id}/")
 //        Observable<Task> getTask(@Path("user_id") String userId, @Path("task_id") String taskId);
     }
 }
