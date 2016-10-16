@@ -44,7 +44,8 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                 .compose(RxTiPresenterUtils.deliverLatestToView(this))
                 .subscribe(mGetAllTasksResponse -> {
                     this.mGetAllTasksResponse = mGetAllTasksResponse;
-                    getView().setTaskList(mGetAllTasksResponse.getTasks());
+                    mListOfTasks = mGetAllTasksResponse.getTasks();
+                    getView().setTaskList(mListOfTasks);
                 }, throwable -> {
                     LogUtil.e(throwable.getCause().getMessage());
                 })

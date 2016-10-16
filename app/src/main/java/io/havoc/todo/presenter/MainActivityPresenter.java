@@ -8,7 +8,14 @@ import io.havoc.todo.view.MainActivityView;
 public class MainActivityPresenter extends TiPresenter<MainActivityView> {
 
     @Override
-    protected void onWakeUp() {
+    public void onWakeUp() {
         super.onWakeUp();
+    }
+
+    /**
+     * Event that fires off when the new task button is clicked
+     */
+    public void newTaskButtonClicked() {
+        getView().launchNewTaskActivity();
     }
 }

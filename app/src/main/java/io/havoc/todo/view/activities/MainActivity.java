@@ -1,17 +1,24 @@
-package io.havoc.todo.view;
+package io.havoc.todo.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.fragments.ListFragment;
 import io.havoc.todo.presenter.MainActivityPresenter;
+import io.havoc.todo.view.MainActivityView;
 
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 
     private static final String FRAGMENT_LIST_VIEW = "List view";
+    @BindView(R.id.floating_action_button)
+    public FloatingActionButton newTaskFAB;
 
     @NonNull
     @Override
@@ -20,9 +27,18 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
     }
 
     @Override
+    public void launchNewTaskActivity() {
+        Intent newTaskIntent = new Intent(this, NewTaskActivity.class);
+        this.startActivity(newTaskIntent);
+    }
+
+    @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        newTaskFAB.setOnClickListener(view -> getPresenter().newTaskButtonClicked());
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
