@@ -1,6 +1,11 @@
 package io.havoc.todo.model.service;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+
+import java.util.Date;
 import java.util.List;
 
 import io.havoc.todo.model.responses.GetAllTasksResponse;
@@ -35,11 +40,19 @@ public class HavocService {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
+        //Creates the json object which will manage the information received
+        //Doing this so we can handle the Date format being in UNIX time
+        GsonBuilder builder = new GsonBuilder();
+        //Register an adapter to manage the date types as long values
+        builder.registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) ->
+                new Date(json.getAsJsonPrimitive().getAsLong()));
+        Gson gson = builder.create();
+
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(client)
                 .addCallAdapterFactory(rxAdapter)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         mHavocApi = retrofit.create(HavocAPI.class);
