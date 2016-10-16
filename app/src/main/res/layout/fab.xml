@@ -1,0 +1,10 @@
+<android.support.design.widget.FloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/floating_action_button"
+    android:layout_width="@dimen/fab_normal_size"
+    android:layout_height="@dimen/fab_normal_size"
+    app:elevation="@dimen/fab_elevation"
+    app:fabSize="normal"
+    app:layout_anchorGravity="bottom|right|end"
+    app:pressedTranslationZ="@dimen/fab_pressed_elevation"
+    app:srcCompat="@drawable/add_black" />

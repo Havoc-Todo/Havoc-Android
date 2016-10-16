@@ -9,11 +9,22 @@ import io.havoc.todo.model.Task;
 
 public class GetAllTasksResponse {
 
+    /**
+     * Whether or not there was an error with the response
+     */
     public boolean status;
 
+    /**
+     * List of Tasks
+     */
     @SerializedName("doc")
     public List<Task> tasks;
 
+    /**
+     * Gets the array of Tasks from the response
+     *
+     * @return the List of Tasks
+     */
     public List<Task> getTasks() {
         return tasks;
     }

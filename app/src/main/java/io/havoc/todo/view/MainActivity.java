@@ -11,7 +11,7 @@ import io.havoc.todo.presenter.MainActivityPresenter;
 
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 
-    private static final String FRAGMENT_LIST_VIEW = "list view";
+    private static final String FRAGMENT_LIST_VIEW = "List view";
 
     @NonNull
     @Override
