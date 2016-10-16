@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_task_name"
-                android:inputType="textAutoComplete|textAutoCorrect"
+                android:inputType="textAutoComplete|textAutoCorrect|textCapSentences"
                 android:lines="1"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_task_description"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="4" />
         </android.support.design.widget.TextInputLayout>
 

@@ -1,4 +1,4 @@
-package io.havoc.todo.fragments;
+package io.havoc.todo.view.fragments;
 
 
 import android.os.Bundle;
@@ -133,17 +133,6 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 
         super.onDestroyView();
     }
-
-    private void onItemViewClick(View v) {
-        int position = mRecyclerView.getChildAdapterPosition(v);
-//        if (position != RecyclerView.NO_POSITION) {
-//            ((MainActivity) getActivity()).onItemClicked(position);
-//        }
-    }
-
-//    private boolean supportsViewElevation() {
-//        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-//    }
 
     public void notifyItemChanged(int position) {
         mAdapter.notifyItemChanged(position);

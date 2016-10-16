@@ -18,7 +18,7 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
 
     //    private static final String FRAGMENT_LIST_VIEW = "List view";
     @BindView(R.id.fab_add)
-    public FloatingActionButton newTaskFAB;
+    public FloatingActionButton fabNewTask;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
@@ -40,7 +40,7 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        newTaskFAB.setOnClickListener(view -> getPresenter().newTaskButtonClicked());
+        fabNewTask.setOnClickListener(view -> getPresenter().newTaskButtonClicked());
 
 //        if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()

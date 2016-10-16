@@ -7,7 +7,7 @@ import java.util.List;
 
 import io.havoc.todo.model.Task;
 
-public class GetAllTasksResponse {
+public class StandardTaskResponse {
 
     /**
      * Whether or not there was an error with the response

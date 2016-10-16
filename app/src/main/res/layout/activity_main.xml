@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/list_fragment"
-        android:name="io.havoc.todo.fragments.ListFragment"
+        android:name="io.havoc.todo.view.fragments.ListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"

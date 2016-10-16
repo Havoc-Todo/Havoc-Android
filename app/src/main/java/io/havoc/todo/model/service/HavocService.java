@@ -8,12 +8,15 @@ import com.google.gson.JsonDeserializer;
 import java.util.Date;
 import java.util.List;
 
-import io.havoc.todo.model.responses.GetAllTasksResponse;
+import io.havoc.todo.model.Task;
+import io.havoc.todo.model.responses.StandardTaskResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -91,11 +94,12 @@ public class HavocService {
         /**
          * Creates a new Task
          *
+         * @param newTask Task to create
          * @return status of whether or not the transaction was successful and the task that was created
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("task/create/")
-        Observable<List<Object>> createNewTask();
+        Call<StandardTaskResponse> createNewTask(@Body Task newTask);
 
         /**
          * Deletes a specified Task using the taskId
@@ -124,7 +128,7 @@ public class HavocService {
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @GET("task/read/{user_id}/")
-        Observable<GetAllTasksResponse> getAllTasks(@Path("user_id") String userId);
+        Observable<StandardTaskResponse> getAllTasks(@Path("user_id") String userId);
 
 //        /**
 //         * Gets a specified Task created by a specified user
