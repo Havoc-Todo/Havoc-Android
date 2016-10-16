@@ -16,8 +16,8 @@
             android:id="@+id/toolbar"
             style="@style/ToolbarStyle"
             android:background="@color/colorPrimaryLight"
-            app:title="@string/toolbar_new_task_title"
             app:navigationIcon="@drawable/back"
+            app:title="@string/toolbar_new_task_title"
             app:titleTextColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
@@ -96,4 +96,17 @@
                 android:text="@string/priority_high" />
         </RadioGroup>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="@dimen/fab_normal_size"
+        android:layout_height="@dimen/fab_normal_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/fab_padding"
+        android:layout_marginEnd="@dimen/fab_padding"
+        android:src="@drawable/check_black"
+        app:elevation="@dimen/fab_elevation"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|right|end"
+        app:pressedTranslationZ="@dimen/fab_pressed_elevation" />
 </RelativeLayout>
