@@ -9,9 +9,9 @@ import java.util.List;
 
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.TaskStatusEnum;
-import io.havoc.todo.model.responses.StandardTaskResponse;
 import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.view.ListFragmentView;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -19,7 +19,6 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
 
     final String USER = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
     private List<Task> mListOfTasks;
-    private StandardTaskResponse mStandardTaskResponse;
     private RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
 
     @Override
@@ -41,12 +40,15 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
         getView().setLoading(true);
 
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(USER)
+                .flatMap(response -> Observable.from(response.getTasks()))
+                //filter out Tasks that are ARCHIVED or DONE
+                .filter(task -> task.getStatus() == TaskStatusEnum.INCOMPLETE)
+                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxTiPresenterUtils.deliverLatestToView(this))
-                .subscribe(response -> {
-                    this.mStandardTaskResponse = response;
-                    mListOfTasks = mStandardTaskResponse.getTasks();
+                .subscribe(list -> {
+                    mListOfTasks = list;
                     getView().setTaskList(mListOfTasks);
                     getView().setLoading(false);
                 }, throwable -> {
