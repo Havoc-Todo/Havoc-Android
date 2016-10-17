@@ -10,7 +10,6 @@ import java.util.List;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.responses.StandardTaskResponse;
 import io.havoc.todo.model.service.HavocService;
-import io.havoc.todo.util.LogUtil;
 import io.havoc.todo.view.ListFragmentView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -46,9 +45,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                     this.mStandardTaskResponse = response;
                     mListOfTasks = mStandardTaskResponse.getTasks();
                     getView().setTaskList(mListOfTasks);
-                }, throwable -> {
-                    LogUtil.e(throwable.getCause().getMessage());
-                })
+                }, Throwable::printStackTrace)
         );
     }
 }

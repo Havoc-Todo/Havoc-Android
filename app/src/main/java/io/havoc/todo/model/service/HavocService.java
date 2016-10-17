@@ -12,7 +12,6 @@ import io.havoc.todo.model.Task;
 import io.havoc.todo.model.responses.StandardTaskResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -104,7 +103,7 @@ public class HavocService {
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("task/create/")
-        Call<StandardTaskResponse> createNewTask(@Body Task newTask);
+        Observable<StandardTaskResponse> createNewTask(@Body Task newTask);
 
         /**
          * Deletes a specified Task using the taskId
