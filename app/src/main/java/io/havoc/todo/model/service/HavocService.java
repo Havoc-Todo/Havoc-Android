@@ -117,12 +117,14 @@ public class HavocService {
 
         /**
          * Updates a Task
+         * Basically sends the Task up to the server and the server updates that Task with whatever has changed
          *
+         * @param task that is to be updated
          * @return status of whether or not the transaction was successful and the task that was updated
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("task/update/")
-        Observable<StandardTaskResponse> updateTask();
+        Observable<StandardTaskResponse> updateTask(@Body Task task);
 
         /**
          * Gets all Tasks by a specified User

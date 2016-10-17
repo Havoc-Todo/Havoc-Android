@@ -100,7 +100,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
         //adapter
-        mTaskListAdapter = new TaskListAdapter();
+        mTaskListAdapter = new TaskListAdapter(getPresenter());
         mAdapter = mTaskListAdapter;
 
         // wrap for swiping

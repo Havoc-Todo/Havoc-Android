@@ -65,12 +65,10 @@ public class Task {
      */
     public List<Subtask> subtasks;
 
-    public Task(String name, /*String taskId,*/ String description,
-                String category, Date dateDue, String userId,
-                int indexInList, TaskPriorityEnum priority, TaskStatusEnum status,
-                List<Subtask> subtasks) {
+    public Task(String name, String description, String category,
+                Date dateDue, String userId, int indexInList, TaskPriorityEnum priority,
+                TaskStatusEnum status, List<Subtask> subtasks) {
         this.name = name;
-//        this.taskId = taskId;
         this.description = description;
         this.category = category;
         this.dateDue = dateDue;
@@ -79,5 +77,32 @@ public class Task {
         this.priority = priority;
         this.status = status;
         this.subtasks = subtasks;
+    }
+
+    /**
+     * Sets the name of this Task
+     *
+     * @param name to set the name to
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets the status of this Task
+     *
+     * @return status of the Task
+     */
+    public TaskStatusEnum getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets the status of this Task
+     *
+     * @param status to set the status to
+     */
+    public void setStatus(TaskStatusEnum status) {
+        this.status = status;
     }
 }

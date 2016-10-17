@@ -15,6 +15,8 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAct
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 
+import net.grandcentrix.thirtyinch.TiPresenter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,23 +24,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.model.Task;
+import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.util.LogUtil;
 
 public class TaskListAdapter
         extends RecyclerView.Adapter<TaskListAdapter.ViewHolder>
         implements SwipeableItemAdapter<TaskListAdapter.ViewHolder> {
 
+    private TiPresenter presenter;
     private List<Task> tasks;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
 
-    public TaskListAdapter() {
+    public TaskListAdapter(TiPresenter presenter) {
+        this.presenter = presenter;
         tasks = new ArrayList<>();
 
-        mItemViewOnClickListener = v -> onItemViewClick(v);
+        mItemViewOnClickListener = this::onItemViewClick;
 
-        mSwipeableViewContainerOnClickListener = v -> onSwipeableViewContainerClick(v);
+        mSwipeableViewContainerOnClickListener = this::onSwipeableViewContainerClick;
 
         // SwipeableItemAdapter requires stable ID, and also
         // have to implement the getItemId() method appropriately.
@@ -240,6 +245,7 @@ public class TaskListAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
+            ((ListFragmentPresenter) mAdapter.presenter).markTaskAsComplete(mAdapter.tasks.get(mPosition));
             mAdapter.tasks.remove(mPosition);
             mAdapter.notifyItemRemoved(mPosition);
         }
