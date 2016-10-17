@@ -7,6 +7,7 @@ import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
 
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.TaskPriorityEnum;
+import io.havoc.todo.model.TaskStatusEnum;
 import io.havoc.todo.model.responses.StandardTaskResponse;
 import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.util.LogUtil;
@@ -31,7 +32,7 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
     private void createTask(String name, String description, TaskPriorityEnum priority) {
         final String USER = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
 
-        Task newTask = new Task(name, description, "", null, USER, 4, priority, null, null);
+        Task newTask = new Task(name, description, "", null, USER, 4, priority, TaskStatusEnum.INCOMPLETE, null);
 
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().createNewTask(newTask)
                 .subscribeOn(Schedulers.io())
