@@ -321,4 +321,10 @@
     <color name="bg_swipe_item_neutral">@color/md_grey_100</color>
     <color name="bg_swipe_item_left">@color/md_orange_A200</color>
     <color name="bg_swipe_item_right">@color/md_green_A200</color>
+    <!--Expandable color-->
+    <color name="expandable_item_indicator_color">#42000000</color>
+    <color name="bg_group_item_normal_state">#ffddffdd</color>
+    <color name="bg_group_item_normal_pressed_state">#ff99cc99</color>
+    <color name="bg_group_item_expanded_state">#ff88dd88</color>
+    <color name="bg_group_item_expanded_pressed_state">#ff99cc99</color>
 </resources>

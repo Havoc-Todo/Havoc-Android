@@ -19,4 +19,7 @@
         <item name="android:minHeight">@dimen/toolbar_normal_height</item>
         <item name="android:elevation">@dimen/toolbar_elevation</item>
     </style>
+
+    <style name="commonListItemStyle">
+    </style>
 </resources>
