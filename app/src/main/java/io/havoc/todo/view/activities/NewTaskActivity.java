@@ -1,5 +1,7 @@
 package io.havoc.todo.view.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +19,7 @@ import io.havoc.todo.model.TaskPriorityEnum;
 import io.havoc.todo.presenter.NewTaskActivityPresenter;
 import io.havoc.todo.view.NewTaskActivityView;
 
-public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTaskActivityView> implements NewTaskActivityView {
+public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTaskActivityView> implements NewTaskActivityView, RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
@@ -51,7 +53,25 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         final String taskDesc = editTextDescription.getText().toString();
 
         getPresenter().saveNewTaskButtonClicked(taskName, taskDesc, selectedTaskPriority);
+
+        //Needed so we know to refresh the list once we return to it
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("addedNewTask", true);
+        setResult(Activity.RESULT_OK, returnIntent);
         this.finish();
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if (checkedId == radioButtonPriorityLow.getId()) {
+            selectedTaskPriority = TaskPriorityEnum.LOW;
+        } else if (checkedId == radioButtonPriorityMedium.getId()) {
+            selectedTaskPriority = TaskPriorityEnum.MEDIUM;
+        } else if (checkedId == radioButtonPriorityHigh.getId()) {
+            selectedTaskPriority = TaskPriorityEnum.HIGH;
+        } else {
+            //todo when nothing is selected?
+        }
     }
 
     @Override
@@ -67,17 +87,5 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         toolbar.setNavigationOnClickListener(view -> this.finish());
 
         fabSaveTask.setOnClickListener(view -> saveNewTask());
-
-        radioGroupPriorities.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == radioButtonPriorityLow.getId()) {
-                selectedTaskPriority = TaskPriorityEnum.LOW;
-            } else if (checkedId == radioButtonPriorityMedium.getId()) {
-                selectedTaskPriority = TaskPriorityEnum.MEDIUM;
-            } else if (checkedId == radioButtonPriorityHigh.getId()) {
-                selectedTaskPriority = TaskPriorityEnum.HIGH;
-            } else {
-                //todo when nothing is selected
-            }
-        });
     }
 }

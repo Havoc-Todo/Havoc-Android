@@ -4,6 +4,7 @@ package io.havoc.todo.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,24 +21,27 @@ import net.grandcentrix.thirtyinch.TiFragment;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.adapters.TaskListAdapter;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
+import io.havoc.todo.view.activities.MainActivity;
 
-public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView {
+public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView, SwipeRefreshLayout.OnRefreshListener {
     private TaskListAdapter mTaskListAdapter;
-    private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.Adapter mWrappedAdapter;
     private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
-    public ListFragment() {
-        super();
-    }
+    @BindView(R.id.rv_task_list)
+    public RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh)
+    public SwipeRefreshLayout swipeRefresh;
 
     @NonNull
     @Override
@@ -51,16 +55,40 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     }
 
     @Override
+    public void setLoading(boolean isLoading) {
+        swipeRefresh.setRefreshing(isLoading);
+    }
+
+    @Override
+    public void onRefresh() {
+        getPresenter().loadTaskList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Refresh the list if a new Task was created
+        if (((MainActivity) getActivity()).refreshList) {
+            ((MainActivity) getActivity()).refreshList = false;
+            onRefresh();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recycler_task_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_task_list, container, false);
+        ButterKnife.bind(this, view);
+
+        swipeRefresh.setOnRefreshListener(this);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //noinspection ConstantConditions
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.rv_task_list);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)

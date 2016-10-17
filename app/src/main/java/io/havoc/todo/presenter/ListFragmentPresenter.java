@@ -27,6 +27,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
         if (mListOfTasks == null) {
             loadTaskList();
         } else {
+            getView().setLoading(false);
             getView().setTaskList(mListOfTasks);
         }
     }
@@ -34,7 +35,9 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
     /**
      * Generates a list of Tasks
      */
-    private void loadTaskList() {
+    public void loadTaskList() {
+        getView().setLoading(true);
+
         final String userId = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
 
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(userId)
@@ -45,7 +48,11 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                     this.mStandardTaskResponse = response;
                     mListOfTasks = mStandardTaskResponse.getTasks();
                     getView().setTaskList(mListOfTasks);
-                }, Throwable::printStackTrace)
+                    getView().setLoading(false);
+                }, throwable -> {
+                    getView().setLoading(false);
+                    throwable.printStackTrace();
+                })
         );
     }
 }

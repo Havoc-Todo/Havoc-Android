@@ -1,5 +1,6 @@
 package io.havoc.todo.view.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import io.havoc.todo.view.MainActivityView;
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 
     //    private static final String FRAGMENT_LIST_VIEW = "List view";
+    public boolean refreshList = false; //whether or not to refresh the List
     @BindView(R.id.fab_add)
     public FloatingActionButton fabNewTask;
     @BindView(R.id.toolbar)
@@ -31,7 +33,17 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
     @Override
     public void launchNewTaskActivity() {
         Intent newTaskIntent = new Intent(this, NewTaskActivity.class);
-        this.startActivity(newTaskIntent);
+        this.startActivityForResult(newTaskIntent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("addedNewTask", false)) {
+                //Refresh the list upon returning
+                refreshList = true;
+            }
+        }
     }
 
     @Override
