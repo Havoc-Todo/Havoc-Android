@@ -115,8 +115,7 @@ public class TaskListAdapter
          * TODO getItemId()
          * Will have to tie in some unique id with a given task; use that to specify tasks
           */
-//        return tasks.get(position).taskId.hashCode();
-        return 0;
+        return tasks.get(position).taskId.hashCode();
     }
 
     @Override
