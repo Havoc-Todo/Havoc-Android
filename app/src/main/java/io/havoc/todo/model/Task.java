@@ -65,18 +65,19 @@ public class Task {
      */
     public List<Subtask> subtasks;
 
-//    public Task(String name, String taskId, String category, int indexInList,
-//                TaskPriorityEnum priority, String description, Date dateDue,
-//                String userId, TaskStatusEnum status, List<Subtask> subtasks) {
-//        this.name = name;
-//        this.userId = userId;
+    public Task(String name, /*String taskId,*/ String description,
+                String category, Date dateDue, String userId,
+                int indexInList, TaskPriorityEnum priority, TaskStatusEnum status,
+                List<Subtask> subtasks) {
+        this.name = name;
 //        this.taskId = taskId;
-//        this.category = category;
-//        this.indexInList = indexInList;
-//        this.priority = priority;
-//        this.description = description;
-//        this.dateDue = dateDue;
-//        this.status = status;
-//        this.subtasks = subtasks;
-//    }
+        this.description = description;
+        this.category = category;
+        this.dateDue = dateDue;
+        this.userId = userId;
+        this.indexInList = indexInList;
+        this.priority = priority;
+        this.status = status;
+        this.subtasks = subtasks;
+    }
 }

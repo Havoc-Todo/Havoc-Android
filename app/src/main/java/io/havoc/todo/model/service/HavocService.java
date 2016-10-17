@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 
 import java.util.Date;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.responses.StandardTaskResponse;
@@ -41,7 +41,12 @@ public class HavocService {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .connectTimeout(45, TimeUnit.SECONDS)
+                .writeTimeout(45, TimeUnit.SECONDS)
+                .readTimeout(45, TimeUnit.SECONDS)
+                .build();
 
         //Creates the json object which will manage the information received
         //Doing this so we can handle the Date format being in UNIX time
@@ -98,7 +103,7 @@ public class HavocService {
          * @return status of whether or not the transaction was successful and the task that was created
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("task/create/")
+        @POST("task/create")
         Call<StandardTaskResponse> createNewTask(@Body Task newTask);
 
         /**
@@ -118,7 +123,7 @@ public class HavocService {
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("task/update/")
-        Observable<List<Object>> updateTask();
+        Observable<StandardTaskResponse> updateTask();
 
         /**
          * Gets all Tasks by a specified User

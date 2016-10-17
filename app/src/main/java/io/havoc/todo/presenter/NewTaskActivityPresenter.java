@@ -31,17 +31,13 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
     private void createTask(String name, String description, TaskPriorityEnum priority) {
         final String USER = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
 
-        Task newTask = new Task();
-        newTask.name = name;
-        newTask.description = description;
-        newTask.priority = priority;
-        newTask.userId = USER;
+        Task newTask = new Task(name, description, "", null, USER, 4, priority, null, null);
 
         Call<StandardTaskResponse> call = HavocService.getInstance().getHavocAPI().createNewTask(newTask);
         call.enqueue(new Callback<StandardTaskResponse>() {
             @Override
             public void onResponse(Call<StandardTaskResponse> call, Response<StandardTaskResponse> response) {
-                LogUtil.v(response.toString());
+                LogUtil.v("Response message: " + response.message());
 //
 //                for(Task x : response.body().getTasks()) {
 //                    LogUtil.v("Task name: " + x.name);
