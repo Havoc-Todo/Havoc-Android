@@ -2,6 +2,7 @@ package io.havoc.todo.adapters;
 
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ViewUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -218,39 +219,31 @@ public class TaskListAdapter
         final int expandState = holder.getExpandStateFlags();
 
         // TODO: remove draggable related stuffs
-//        if (((dragState & Draggable.STATE_FLAG_IS_UPDATED) != 0) ||
-//                ((expandState & Expandable.STATE_FLAG_IS_UPDATED) != 0) ||
-//                ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0)) {
-//            int bgResId;
-//            boolean isExpanded;
-//            boolean animateIndicator = ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
-//
-//            if ((dragState & Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
-//                bgResId = R.drawable.bg_group_item_dragging_active_state;
-//
-//                // need to clear drawable state here to get correct appearance of the dragging item.
-//                DrawableUtils.clearState(holder.mContainer.getForeground());
-//            } else if ((dragState & Draggable.STATE_FLAG_DRAGGING) != 0) {
-//                bgResId = R.drawable.bg_group_item_dragging_state;
-//            } else if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
-//                bgResId = R.drawable.bg_group_item_swiping_active_state;
-//            } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
-//                bgResId = R.drawable.bg_group_item_swiping_state;
-//            } else if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
-//                bgResId = R.drawable.bg_group_item_expanded_state;
-//            } else {
-//                bgResId = R.drawable.bg_group_item_normal_state;
-//            }
-//
-//            if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
-//                isExpanded = true;
-//            } else {
-//                isExpanded = false;
-//            }
-//
-//            holder.mContainer.setBackgroundResource(bgResId);
-//            holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
-//        }
+        if (((expandState & Expandable.STATE_FLAG_IS_UPDATED) != 0) ||
+                ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0)) {
+            int bgResId;
+            boolean isExpanded;
+            boolean animateIndicator = ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
+
+            if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
+                bgResId = R.drawable.bg_group_item_swiping_active_state;
+            } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
+                bgResId = R.drawable.bg_group_item_swiping_state;
+            } else if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
+                bgResId = R.drawable.bg_group_item_expanded_state;
+            } else {
+                bgResId = R.drawable.bg_group_item_normal_state;
+            }
+
+            if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
+                isExpanded = true;
+            } else {
+                isExpanded = false;
+            }
+
+            holder.mContainer.setBackgroundResource(bgResId);
+            holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
+        }
 
 
         // set swiping properties
@@ -272,21 +265,12 @@ public class TaskListAdapter
         // set text
         holder.mTextView.setText(item.getText());
 
-        final int dragState = holder.getDragStateFlags();
         final int swipeState = holder.getSwipeStateFlags();
 
-        if (((dragState & Draggable.STATE_FLAG_IS_UPDATED) != 0) ||
-                ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0)) {
+        if (((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0)) {
             int bgResId;
 
-            if ((dragState & Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
-                bgResId = R.drawable.bg_item_dragging_active_state;
-
-                // need to clear drawable state here to get correct appearance of the dragging item.
-                DrawableUtils.clearState(holder.mContainer.getForeground());
-            } else if ((dragState & Draggable.STATE_FLAG_DRAGGING) != 0) {
-                bgResId = R.drawable.bg_item_dragging_state;
-            } else if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
+            if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
                 bgResId = R.drawable.bg_item_swiping_active_state;
             } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
                 bgResId = R.drawable.bg_item_swiping_state;
@@ -316,7 +300,6 @@ public class TaskListAdapter
         }
 
         final View containerView = holder.mContainer;
-        final View dragHandleView = holder.mDragHandle;
 
         final int offsetX = containerView.getLeft() + (int) (ViewCompat.getTranslationX(containerView) + 0.5f);
         final int offsetY = containerView.getTop() + (int) (ViewCompat.getTranslationY(containerView) + 0.5f);
@@ -537,26 +520,37 @@ public class TaskListAdapter
         }
     }
 
-    /**
-     * Action to perform when swiping LEFT on an item
-     */
-    private static class SwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
-        private final int mPosition;
-        private TaskListAdapter mAdapter;
+    private static class GroupSwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
+        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private final int mGroupPosition;
+        private boolean mSetPinned;
 
-        SwipeLeftResultAction(TaskListAdapter adapter, int position) {
+        GroupSwipeLeftResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition) {
             mAdapter = adapter;
-            mPosition = position;
+            mGroupPosition = groupPosition;
         }
 
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
+
+            AbstractExpandableDataProvider.GroupData item =
+                    mAdapter.mProvider.getGroupItem(mGroupPosition);
+
+            if (!item.isPinned()) {
+                item.setPinned(true);
+                mAdapter.mExpandableItemManager.notifyGroupItemChanged(mGroupPosition);
+                mSetPinned = true;
+            }
         }
 
         @Override
         protected void onSlideAnimationEnd() {
             super.onSlideAnimationEnd();
+
+            if (mSetPinned && mAdapter.mEventListener != null) {
+                mAdapter.mEventListener.onGroupItemPinned(mGroupPosition);
+            }
         }
 
         @Override
@@ -567,24 +561,21 @@ public class TaskListAdapter
         }
     }
 
-    /**
-     * Action to perform when swiping RIGHT on an item
-     */
-    private static class SwipeRightResultAction extends SwipeResultActionRemoveItem {
-        private final int mPosition;
-        private TaskListAdapter mAdapter;
+    private static class GroupSwipeRightResultAction extends SwipeResultActionRemoveItem {
+        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private final int mGroupPosition;
 
-        SwipeRightResultAction(TaskListAdapter adapter, int position) {
+        GroupSwipeRightResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition) {
             mAdapter = adapter;
-            mPosition = position;
+            mGroupPosition = groupPosition;
         }
 
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
 
-            mAdapter.tasks.remove(mPosition);
-            mAdapter.notifyItemRemoved(mPosition);
+            mAdapter.mProvider.removeGroupItem(mGroupPosition);
+            mAdapter.mExpandableItemManager.notifyGroupItemRemoved(mGroupPosition);
         }
 
         @Override
@@ -592,7 +583,145 @@ public class TaskListAdapter
             super.onSlideAnimationEnd();
 
             if (mAdapter.mEventListener != null) {
-                mAdapter.mEventListener.onItemRemoved(mPosition);
+                mAdapter.mEventListener.onGroupItemRemoved(mGroupPosition);
+            }
+        }
+
+        @Override
+        protected void onCleanUp() {
+            super.onCleanUp();
+            // clear the references
+            mAdapter = null;
+        }
+    }
+
+    private static class GroupUnpinResultAction extends SwipeResultActionDefault {
+        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private final int mGroupPosition;
+
+        GroupUnpinResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition) {
+            mAdapter = adapter;
+            mGroupPosition = groupPosition;
+        }
+
+        @Override
+        protected void onPerformAction() {
+            super.onPerformAction();
+
+            AbstractExpandableDataProvider.GroupData item = mAdapter.mProvider.getGroupItem(mGroupPosition);
+            if (item.isPinned()) {
+                item.setPinned(false);
+                mAdapter.mExpandableItemManager.notifyGroupItemChanged(mGroupPosition);
+            }
+        }
+
+        @Override
+        protected void onCleanUp() {
+            super.onCleanUp();
+            // clear the references
+            mAdapter = null;
+        }
+    }
+
+
+    private static class ChildSwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
+        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private final int mGroupPosition;
+        private final int mChildPosition;
+        private boolean mSetPinned;
+
+        ChildSwipeLeftResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition, int childPosition) {
+            mAdapter = adapter;
+            mGroupPosition = groupPosition;
+            mChildPosition = childPosition;
+        }
+
+        @Override
+        protected void onPerformAction() {
+            super.onPerformAction();
+
+            AbstractExpandableDataProvider.ChildData item =
+                    mAdapter.mProvider.getChildItem(mGroupPosition, mChildPosition);
+
+            if (!item.isPinned()) {
+                item.setPinned(true);
+                mAdapter.mExpandableItemManager.notifyChildItemChanged(mGroupPosition, mChildPosition);
+                mSetPinned = true;
+            }
+        }
+
+        @Override
+        protected void onSlideAnimationEnd() {
+            super.onSlideAnimationEnd();
+
+            if (mSetPinned && mAdapter.mEventListener != null) {
+                mAdapter.mEventListener.onChildItemPinned(mGroupPosition, mChildPosition);
+            }
+        }
+
+        @Override
+        protected void onCleanUp() {
+            super.onCleanUp();
+            // clear the references
+            mAdapter = null;
+        }
+    }
+
+    private static class ChildSwipeRightResultAction extends SwipeResultActionRemoveItem {
+        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private final int mGroupPosition;
+        private final int mChildPosition;
+
+        ChildSwipeRightResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition, int childPosition) {
+            mAdapter = adapter;
+            mGroupPosition = groupPosition;
+            mChildPosition = childPosition;
+        }
+
+        @Override
+        protected void onPerformAction() {
+            super.onPerformAction();
+
+            mAdapter.mProvider.removeChildItem(mGroupPosition, mChildPosition);
+            mAdapter.mExpandableItemManager.notifyChildItemRemoved(mGroupPosition, mChildPosition);
+        }
+
+        @Override
+        protected void onSlideAnimationEnd() {
+            super.onSlideAnimationEnd();
+
+            if (mAdapter.mEventListener != null) {
+                mAdapter.mEventListener.onChildItemRemoved(mGroupPosition, mChildPosition);
+            }
+        }
+
+        @Override
+        protected void onCleanUp() {
+            super.onCleanUp();
+            // clear the references
+            mAdapter = null;
+        }
+    }
+
+    private static class ChildUnpinResultAction extends SwipeResultActionDefault {
+        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private final int mGroupPosition;
+        private final int mChildPosition;
+
+        ChildUnpinResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition, int childPosition) {
+            mAdapter = adapter;
+            mGroupPosition = groupPosition;
+            mChildPosition = childPosition;
+        }
+
+        @Override
+        protected void onPerformAction() {
+            super.onPerformAction();
+
+            AbstractExpandableDataProvider.ChildData item = mAdapter.mProvider.getChildItem(mGroupPosition, mChildPosition);
+            if (item.isPinned()) {
+                item.setPinned(false);
+                mAdapter.mExpandableItemManager.notifyChildItemChanged(mGroupPosition, mChildPosition);
             }
         }
 
