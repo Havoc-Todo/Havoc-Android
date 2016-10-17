@@ -94,31 +94,41 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
         //adapter
-        mTaskListAdapter = new TaskListAdapter();
-        mAdapter = mTaskListAdapter;
+        final TaskListAdapter myItemAdapter = new TaskListAdapter(mRecyclerViewExpandableItemManager, getDataProvider());
+        myItemAdapter.setEventListener(new TaskListAdapter.EventListener() {
+            @Override
+            public void onGroupItemRemoved(int groupPosition) {
+                ((MainActivity) getActivity()).onGroupItemRemoved(groupPosition);
+            }
 
-        // adapter for expandable
-        final ExpandableAdapter expandableAdapter = new ExpandableAdapter(getDataProvider());
+            @Override
+            public void onChildItemRemoved(int groupPosition, int childPosition) {
+                ((MainActivity) getActivity()).onChildItemRemoved(groupPosition, childPosition);
+            }
 
-        mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(expandableAdapter);       // wrap for expanding
+            @Override
+            public void onGroupItemPinned(int groupPosition) {
+                ((MainActivity) getActivity()).onGroupItemPinned(groupPosition);
+            }
 
-        final GeneralItemAnimator expandableAnimator = new RefactoredDefaultItemAnimator();
-        expandableAnimator.setSupportsChangeAnimations(false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
-        mRecyclerView.setItemAnimator(expandableAnimator);
+            @Override
+            public void onChildItemPinned(int groupPosition, int childPosition) {
+                ((MainActivity) getActivity()).onChildItemPinned(groupPosition, childPosition);
+            }
 
-        // additional decorations for expandable
-        //noinspection StatementWithEmptyBody
-//        if (supportsViewElevation()) {
-//            // Lollipop or later has native drop shadow feature. ItemShadowDecorator is not required.
-//        } else {
-//            mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z1)));
-//        }
-        mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
-        // wrap for swiping
-        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mTaskListAdapter);
+            @Override
+            public void onItemViewClicked(View v, boolean pinned) {
+                onItemViewClick(v, pinned);
+            }
+        });
 
+        mAdapter = myItemAdapter;
+
+        // wrap swip & expandable adaptors
+        mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);       // wrap for expanding
+        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mWrappedAdapter);      // wrap for swiping
+
+        // animators
         final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
 
         // Change animations are enabled by default since support-v7-recyclerview v22.
@@ -128,6 +138,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
         mRecyclerView.setItemAnimator(animator);
+        mRecyclerView.setHasFixedSize(false);
 
         //TODO, add'l list decor
 //        mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
@@ -135,10 +146,10 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         // NOTE:
         // The initialization order is very important! This order determines the priority of touch event handling.
         //
-        // priority: TouchActionGuard > Swipe > DragAndDrop
+        // priority: TouchActionGuard > Swipe > DragAndDrop > Expandable
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
-        mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
+        mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
 
         // for debugging
 //        animator.setDebug(true);
