@@ -103,7 +103,7 @@ public class HavocService {
          * @return status of whether or not the transaction was successful and the task that was created
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("task/create")
+        @POST("task/create/")
         Call<StandardTaskResponse> createNewTask(@Body Task newTask);
 
         /**
