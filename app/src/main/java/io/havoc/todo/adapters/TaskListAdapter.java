@@ -37,8 +37,6 @@ public class TaskListAdapter
     private TiPresenter presenter;
     private Context context;
     private List<Task> tasks;
-    private View.OnClickListener mItemViewOnClickListener;
-    private View.OnClickListener mSwipeableViewContainerOnClickListener;
 
     public TaskListAdapter(TiPresenter presenter) {
         this.presenter = presenter;
@@ -68,12 +66,6 @@ public class TaskListAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Task item = tasks.get(position);
-
-        // set listeners
-        // (if the item is *pinned*, click event comes to the itemView)
-        holder.itemView.setOnClickListener(mItemViewOnClickListener);
-        // (if the item is *not pinned*, click event comes to the mContainer)
-        holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         //set Task name
         holder.mTaskNameText.setText(item.getName());

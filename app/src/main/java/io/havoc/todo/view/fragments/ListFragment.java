@@ -4,6 +4,7 @@ package io.havoc.todo.view.fragments;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -101,7 +102,8 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
             }
         };
 
-//        getContext().registerReceiver(mBroadcastReciever, new IntentFilter("start_list_fragment"));
+        final String intent = "START_LIST_FRAGMENT";
+        getContext().registerReceiver(mBroadcastReciever, new IntentFilter(intent));
 
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
