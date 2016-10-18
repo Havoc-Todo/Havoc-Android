@@ -88,6 +88,11 @@ public class Task {
         this.name = name;
     }
 
+    // get the name of this task
+    public String getName() {
+        return name;
+    }
+
     /**
      * Gets the status of this Task
      *
@@ -105,4 +110,56 @@ public class Task {
     public void setStatus(TaskStatusEnum status) {
         this.status = status;
     }
+
+
+    // set the description of this task
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    // get the description of this task
+    public String getDescription() { return description; }
+
+    // set the category of this task
+    public void setCategory(String category) { this.category = category; }
+
+    // get the category of this task
+    public String getCategory() { return category; }
+
+    // set the due date of this task
+    public void setDateDue(Date dateDue) { this.dateDue = dateDue; }
+
+    // get the due date of this task
+    public Date getDateDue() { return dateDue; }
+
+    // set the priority of this task
+    public void setPriority(TaskPriorityEnum priority) { this.priority = priority; }
+
+    // get the priority of this task
+    public TaskPriorityEnum getPriority() { return priority; }
+
+    // set the id of this task
+    public void setTaskId(String taskId) { this.taskId = taskId; }
+
+    // get the id of this task
+    public String getTaskId() { return taskId; }
+
+    // set the user id of this task
+    public void setUserId(String userId) { this.userId = userId; }
+
+    // get the user id of this task
+    public String getUserId() { return userId; }
+
+    // set the index of this task in the parent list
+    public void setIndexInList(int indexInList) { this.indexInList = indexInList; }
+
+    // get the index of this task in the parent list
+    public int getIndexInList() { return indexInList; }
+
+    // set the subtasks
+    public void setSubtasks(List<Subtask> subtasks) { this.subtasks = subtasks; }
+
+    // get the subtasks
+    public List<Subtask> getSubtasks() { return subtasks; }
+
 }
