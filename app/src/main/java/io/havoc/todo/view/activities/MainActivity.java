@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -53,6 +54,8 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
         ButterKnife.bind(this);
 
         fabNewTask.setOnClickListener(view -> getPresenter().newTaskButtonClicked());
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
 
 //        if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()
