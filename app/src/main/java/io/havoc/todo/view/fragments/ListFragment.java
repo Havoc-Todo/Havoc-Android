@@ -1,6 +1,9 @@
 package io.havoc.todo.view.fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +33,12 @@ import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
 import io.havoc.todo.view.activities.MainActivity;
 
-public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView> implements ListFragmentView, SwipeRefreshLayout.OnRefreshListener {
+public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView>
+        implements ListFragmentView, SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.rv_task_list)
+    public RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh)
+    public SwipeRefreshLayout swipeRefresh;
     private TaskListAdapter mTaskListAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -38,17 +46,12 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
-    @BindView(R.id.rv_task_list)
-    public RecyclerView mRecyclerView;
-    @BindView(R.id.swipe_refresh)
-    public SwipeRefreshLayout swipeRefresh;
-
     @NonNull
     @Override
     public ListFragmentPresenter providePresenter() {
         return new ListFragmentPresenter();
     }
-    
+
     @Override
     public void setTaskList(List<Task> tasks) {
         mTaskListAdapter.setTasks(tasks);
@@ -88,6 +91,17 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        BroadcastReceiver mBroadcastReciever = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new DetailItemFragment(), "detail fragment")
+                        .commit();
+            }
+        };
+
+//        getContext().registerReceiver(mBroadcastReciever, new IntentFilter("start_list_fragment"));
 
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 

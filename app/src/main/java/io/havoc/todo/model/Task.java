@@ -11,50 +11,59 @@ import java.util.List;
 public class Task {
 
     /**
-     * Unique identifier for the Task
+     * Name of the Task
      */
-    @SerializedName("t_id")
-    public String taskId;
+    private String name;
+
+    /**
+     * Additional notes about the Task
+     */
+    private String description;
+
+    /**
+     * Category of Task (School, Work, etc.)
+     */
+    private String category;
+
+    /**
+     * Due date of the Task
+     */
+    private Date dateDue;
+
     /**
      * The unique identifier of the User which this Task belongs to
      */
     @SerializedName("user")
-    public String userId;
-    /**
-     * Category of Task (School, Work, etc.)
-     */
-    public String category;
+    private String userId;
+
     /**
      * Current position of the Task in its parent list
      */
-    public int indexInList;
-    /**
-     * Additional notes about the Task
-     */
-    public String description;
-    /**
-     * Due date of the Task
-     */
-    public Date dateDue;
+    private int indexInList;
+
     /**
      * Priority of the Task
      * -1 = NONE (default), 1 = LOW, 2 = MEDIUM, 3 = HIGH
      */
-    public TaskPriorityEnum priority = TaskPriorityEnum.NONE;
+    private TaskPriorityEnum priority = TaskPriorityEnum.NONE;
+
     /**
      * Status of the Task
      * DONE = "Done", INCOMPLETE = "Incomplete"
      */
-    public TaskStatusEnum status;
+    private TaskStatusEnum status;
+
     /**
      * Subtasks of the Task
      * Just a basic List of Strings
      */
-    public List<Subtask> subtasks;
+    private List<Subtask> subtasks;
+
     /**
-     * Name of the Task
+     * Unique identifier for the Task
      */
-    private String name;
+    @SerializedName("t_id")
+    private String taskId;
 
     public Task(String name, String description, String category,
                 Date dateDue, String userId, int indexInList, TaskPriorityEnum priority,

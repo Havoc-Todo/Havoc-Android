@@ -16,7 +16,6 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAct
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultActionMoveToSwipedDirection;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultActionRemoveItem;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
-import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -38,8 +37,6 @@ public class TaskListAdapter
     private TiPresenter presenter;
     private Context context;
     private List<Task> tasks;
-    private int nightMode;
-    private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
 
@@ -47,25 +44,9 @@ public class TaskListAdapter
         this.presenter = presenter;
         tasks = new ArrayList<>();
 
-        mItemViewOnClickListener = this::onItemViewClick;
-
-        mSwipeableViewContainerOnClickListener = this::onSwipeableViewContainerClick;
-
         // SwipeableItemAdapter requires stable ID, and also
         // have to implement the getItemId() method appropriately.
         setHasStableIds(true);
-    }
-
-    private void onItemViewClick(View v) {
-        if (mEventListener != null) {
-            mEventListener.onItemViewClicked(v); // true --- pinned
-        }
-    }
-
-    private void onSwipeableViewContainerClick(View v) {
-        if (mEventListener != null) {
-            mEventListener.onItemViewClicked(RecyclerViewAdapterUtils.getParentViewHolderItemView(v));
-        }
     }
 
     public void setTasks(List<Task> tasks) {
@@ -153,7 +134,7 @@ public class TaskListAdapter
          * TODO getItemId()
          * Will have to tie in some unique id with a given task; use that to specify tasks
          */
-        return tasks.get(position).taskId.hashCode();
+        return tasks.get(position).getTaskId().hashCode();
     }
 
     @Override
@@ -197,22 +178,8 @@ public class TaskListAdapter
         }
     }
 
-    public EventListener getEventListener() {
-        return mEventListener;
-    }
-
-    public void setEventListener(EventListener eventListener) {
-        mEventListener = eventListener;
-    }
-
     private interface Swipeable extends SwipeableItemConstants {
         //nothing
-    }
-
-    public interface EventListener {
-        void onItemRemoved(int position);
-
-        void onItemViewClicked(View v);
     }
 
     static class ViewHolder extends AbstractSwipeableItemViewHolder {
@@ -288,10 +255,6 @@ public class TaskListAdapter
         @Override
         protected void onSlideAnimationEnd() {
             super.onSlideAnimationEnd();
-
-            if (mAdapter.mEventListener != null) {
-                mAdapter.mEventListener.onItemRemoved(mPosition);
-            }
         }
 
         @Override
