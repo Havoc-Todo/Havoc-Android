@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Light text on dark backgrounds-->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#B3FFFFFF</color>
+    <color name="text_icons">#80FFFFFF</color>
+    <color name="text_dividers">#1FFFFFFF</color>
+
+    <!--App colors-->
+    <color name="window_background">@color/md_grey_850</color>
+
+    <!--Task List colors-->
+    <color name="bg_swipe_item_neutral">@color/md_grey_800</color>
+    <color name="bg_swipe_item_left">@color/md_orange_A200</color>
+    <color name="bg_swipe_item_right">@color/md_green_A200</color>
+</resources>

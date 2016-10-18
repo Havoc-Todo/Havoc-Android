@@ -6,11 +6,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:textColorPrimary">@color/dark_text_primary</item>
-        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
-        <item name="android:textColorHint">@color/dark_text_icons</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_icons</item>
 
-        <item name="android:windowBackground">@color/md_grey_50</item>
+        <item name="android:windowBackground">@color/window_background</item>
     </style>
 
     <style name="ToolbarStyle" parent="Base.Widget.AppCompat.Toolbar">

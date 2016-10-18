@@ -299,16 +299,10 @@
     <color name="white">#FFFFFF</color>
 
     <!--Dark text on light backgrounds-->
-    <color name="dark_text_primary">#DE000000</color>
-    <color name="dark_text_secondary">#8A000000</color>
-    <color name="dark_text_icons">#61000000</color>
-    <color name="dark_text_dividers">#1F000000</color>
-
-    <!--Light text on dark backgrounds-->
-    <color name="light_text_primary">#FFFFFFFF</color>
-    <color name="light_text_secondary">#B3FFFFFF</color>
-    <color name="light_text_icons">#80FFFFFF</color>
-    <color name="light_text_dividers">#1FFFFFFF</color>
+    <color name="text_primary">#DE000000</color>
+    <color name="text_secondary">#8A000000</color>
+    <color name="text_icons">#61000000</color>
+    <color name="text_dividers">#1F000000</color>
 
     <!--App colors-->
     <color name="colorPrimary">@color/md_light_blue_800</color>
@@ -316,10 +310,10 @@
     <color name="colorPrimaryDark">@color/md_light_blue_900</color>
     <color name="colorAccent">@color/md_light_green_A400</color>
     <color name="colorAccentLight">@color/md_light_green_A200</color>
+    <color name="window_background">@color/md_grey_50</color>
     
     <!--Task List colors-->
     <color name="bg_swipe_item_neutral">@color/md_grey_100</color>
-    <color name="bg_swipe_item_neutral_night">@color/md_grey_800</color>
     <color name="bg_swipe_item_left">@color/md_orange_A200</color>
     <color name="bg_swipe_item_right">@color/md_green_A200</color>
 </resources>
