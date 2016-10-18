@@ -49,9 +49,9 @@ public class Task {
 
     /**
      * Priority of the Task
-     * 1 = LOW, 2 = MEDIUM, 3 = HIGH
+     * -1 = NONE (default), 1 = LOW, 2 = MEDIUM, 3 = HIGH
      */
-    public int priority = -1;
+    public TaskPriorityEnum priority = TaskPriorityEnum.NONE;
 
     /**
      * Status of the Task
@@ -66,7 +66,7 @@ public class Task {
     public List<Subtask> subtasks;
 
     public Task(String name, String description, String category,
-                Date dateDue, String userId, int indexInList, int priority,
+                Date dateDue, String userId, int indexInList, TaskPriorityEnum priority,
                 TaskStatusEnum status, List<Subtask> subtasks) {
         this.name = name;
         this.description = description;
@@ -102,24 +102,8 @@ public class Task {
      *
      * @return priority of the Task
      */
-    public int getPriority() {
+    public TaskPriorityEnum getPriority() {
         return priority;
-    }
-
-    public TaskPriorityEnum getPriorityEnum(int value) {
-        TaskPriorityEnum priorityEnum = null;
-
-        if (value < 0) {
-            return null;
-        }
-
-        for (int i = 0; i < TaskPriorityEnum.values().length; ++i) {
-            if (value == TaskPriorityEnum.values()[i].getPriorityInt()) {
-                priorityEnum = TaskPriorityEnum.values()[i];
-                break;
-            }
-        }
-        return priorityEnum;
     }
 
     /**

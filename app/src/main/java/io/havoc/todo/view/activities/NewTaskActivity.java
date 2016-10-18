@@ -69,7 +69,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         } else if (checkedId == radioButtonPriorityHigh.getId()) {
             selectedTaskPriority = TaskPriorityEnum.HIGH;
         } else {
-            selectedTaskPriority = null;
+            selectedTaskPriority = TaskPriorityEnum.NONE;
         }
     }
 

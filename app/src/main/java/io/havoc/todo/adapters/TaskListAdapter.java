@@ -92,22 +92,20 @@ public class TaskListAdapter
         holder.mTaskName.setText(item.getName());
 
         //set Task priority and color depending on priority
-        if (item.getPriority() != -1) {
-            TaskPriorityEnum priorityEnum = item.getPriorityEnum(item.getPriority());
-            if (priorityEnum != null) {
-                switch (priorityEnum) {
-                    case LOW:
-                        holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.dark_text_secondary));
-                        break;
-                    case MEDIUM:
-                        holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.md_yellow_700));
-                        break;
-                    case HIGH:
-                        holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.md_red_400));
-                        break;
-                }
-                holder.mTaskPriority.setText(priorityEnum.toString());
+        TaskPriorityEnum priorityEnum = item.getPriority();
+        if (priorityEnum != null && priorityEnum != TaskPriorityEnum.NONE) {
+            switch (item.getPriority()) {
+                case LOW:
+                    holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.dark_text_secondary));
+                    break;
+                case MEDIUM:
+                    holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.md_yellow_700));
+                    break;
+                case HIGH:
+                    holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.md_red_400));
+                    break;
             }
+            holder.mTaskPriority.setText(priorityEnum.toString());
         }
 
         // set background resource (target view ID: container)
