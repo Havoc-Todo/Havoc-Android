@@ -521,11 +521,11 @@ public class TaskListAdapter
     }
 
     private static class GroupSwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
-        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private TaskListAdapter mAdapter;
         private final int mGroupPosition;
         private boolean mSetPinned;
 
-        GroupSwipeLeftResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition) {
+        GroupSwipeLeftResultAction(TaskListAdapter adapter, int groupPosition) {
             mAdapter = adapter;
             mGroupPosition = groupPosition;
         }
@@ -562,10 +562,10 @@ public class TaskListAdapter
     }
 
     private static class GroupSwipeRightResultAction extends SwipeResultActionRemoveItem {
-        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private TaskListAdapter mAdapter;
         private final int mGroupPosition;
 
-        GroupSwipeRightResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition) {
+        GroupSwipeRightResultAction(TaskListAdapter adapter, int groupPosition) {
             mAdapter = adapter;
             mGroupPosition = groupPosition;
         }
@@ -596,10 +596,10 @@ public class TaskListAdapter
     }
 
     private static class GroupUnpinResultAction extends SwipeResultActionDefault {
-        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private TaskListAdapter mAdapter;
         private final int mGroupPosition;
 
-        GroupUnpinResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition) {
+        GroupUnpinResultAction(TaskListAdapter adapter, int groupPosition) {
             mAdapter = adapter;
             mGroupPosition = groupPosition;
         }
@@ -625,12 +625,12 @@ public class TaskListAdapter
 
 
     private static class ChildSwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
-        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private TaskListAdapter mAdapter;
         private final int mGroupPosition;
         private final int mChildPosition;
         private boolean mSetPinned;
 
-        ChildSwipeLeftResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition, int childPosition) {
+        ChildSwipeLeftResultAction(TaskListAdapter adapter, int groupPosition, int childPosition) {
             mAdapter = adapter;
             mGroupPosition = groupPosition;
             mChildPosition = childPosition;
@@ -668,11 +668,11 @@ public class TaskListAdapter
     }
 
     private static class ChildSwipeRightResultAction extends SwipeResultActionRemoveItem {
-        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private TaskListAdapter mAdapter;
         private final int mGroupPosition;
         private final int mChildPosition;
 
-        ChildSwipeRightResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition, int childPosition) {
+        ChildSwipeRightResultAction(TaskListAdapter adapter, int groupPosition, int childPosition) {
             mAdapter = adapter;
             mGroupPosition = groupPosition;
             mChildPosition = childPosition;
@@ -704,11 +704,11 @@ public class TaskListAdapter
     }
 
     private static class ChildUnpinResultAction extends SwipeResultActionDefault {
-        private ExpandableDraggableSwipeableExampleAdapter mAdapter;
+        private TaskListAdapter mAdapter;
         private final int mGroupPosition;
         private final int mChildPosition;
 
-        ChildUnpinResultAction(ExpandableDraggableSwipeableExampleAdapter adapter, int groupPosition, int childPosition) {
+        ChildUnpinResultAction(TaskListAdapter adapter, int groupPosition, int childPosition) {
             mAdapter = adapter;
             mGroupPosition = groupPosition;
             mChildPosition = childPosition;
