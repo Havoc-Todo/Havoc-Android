@@ -13,7 +13,7 @@ public class Task {
     /**
      * Name of the Task
      */
-    public String name;
+    private String name;
 
     /**
      * Unique identifier for the Task
@@ -51,7 +51,7 @@ public class Task {
      * Priority of the Task
      * 1 = LOW, 2 = MEDIUM, 3 = HIGH
      */
-    public TaskPriorityEnum priority;
+    public int priority = -1;
 
     /**
      * Status of the Task
@@ -66,7 +66,7 @@ public class Task {
     public List<Subtask> subtasks;
 
     public Task(String name, String description, String category,
-                Date dateDue, String userId, int indexInList, TaskPriorityEnum priority,
+                Date dateDue, String userId, int indexInList, int priority,
                 TaskStatusEnum status, List<Subtask> subtasks) {
         this.name = name;
         this.description = description;
@@ -80,12 +80,46 @@ public class Task {
     }
 
     /**
+     * Gets the name of this Task
+     *
+     * @return name of the Task
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Sets the name of this Task
      *
      * @param name to set the name to
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets the priority of this Task
+     *
+     * @return priority of the Task
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    public TaskPriorityEnum getPriorityEnum(int value) {
+        TaskPriorityEnum priorityEnum = null;
+
+        if (value < 0) {
+            return null;
+        }
+
+        for (int i = 0; i < TaskPriorityEnum.values().length; ++i) {
+            if (value == TaskPriorityEnum.values()[i].getPriorityInt()) {
+                priorityEnum = TaskPriorityEnum.values()[i];
+                break;
+            }
+        }
+        return priorityEnum;
     }
 
     /**

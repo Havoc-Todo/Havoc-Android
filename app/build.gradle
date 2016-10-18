@@ -66,6 +66,11 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
+    //MaterialDrawer
+    compile('com.mikepenz:materialdrawer:5.6.0@aar') {
+        transitive = true
+    }
+
     //FlexLayout
 //    compile 'com.github.mmin18:flexlayout:1.2.6'
 

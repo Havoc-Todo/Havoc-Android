@@ -1,5 +1,6 @@
 package io.havoc.todo.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.model.Task;
+import io.havoc.todo.model.TaskPriorityEnum;
 import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.util.LogUtil;
 
@@ -32,6 +34,7 @@ public class TaskListAdapter
         implements SwipeableItemAdapter<TaskListAdapter.ViewHolder> {
 
     private TiPresenter presenter;
+    private Context context;
     private List<Task> tasks;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
@@ -71,6 +74,7 @@ public class TaskListAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.list_item, parent, false);
+        context = v.getContext();
         return new ViewHolder(v);
     }
 
@@ -84,8 +88,27 @@ public class TaskListAdapter
         // (if the item is *not pinned*, click event comes to the mContainer)
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
-        // set text
-        holder.mTextView.setText(item.name);
+        //set Task name
+        holder.mTaskName.setText(item.getName());
+
+        //set Task priority and color depending on priority
+        if (item.getPriority() != -1) {
+            TaskPriorityEnum priorityEnum = item.getPriorityEnum(item.getPriority());
+            if (priorityEnum != null) {
+                switch (priorityEnum) {
+                    case LOW:
+                        holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.dark_text_secondary));
+                        break;
+                    case MEDIUM:
+                        holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.md_yellow_700));
+                        break;
+                    case HIGH:
+                        holder.mTaskPriority.setTextColor(context.getResources().getColor(R.color.md_red_400));
+                        break;
+                }
+                holder.mTaskPriority.setText(priorityEnum.toString());
+            }
+        }
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
@@ -119,7 +142,7 @@ public class TaskListAdapter
         /**
          * TODO getItemId()
          * Will have to tie in some unique id with a given task; use that to specify tasks
-          */
+         */
         return tasks.get(position).taskId.hashCode();
     }
 
@@ -186,7 +209,9 @@ public class TaskListAdapter
         @BindView(R.id.container)
         FrameLayout mContainer;
         @BindView(android.R.id.text1)
-        TextView mTextView;
+        TextView mTaskName;
+        @BindView(R.id.priority_text)
+        TextView mTaskPriority;
 
         ViewHolder(View v) {
             super(v);

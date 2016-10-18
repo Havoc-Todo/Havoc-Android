@@ -35,7 +35,6 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
     public RadioButton radioButtonPriorityMedium;
     @BindView(R.id.radio_button_priority_high)
     public RadioButton radioButtonPriorityHigh;
-
     @BindView(R.id.fab_save)
     FloatingActionButton fabSaveTask;
 
@@ -70,7 +69,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         } else if (checkedId == radioButtonPriorityHigh.getId()) {
             selectedTaskPriority = TaskPriorityEnum.HIGH;
         } else {
-            //todo when nothing is selected?
+            selectedTaskPriority = null;
         }
     }
 
@@ -86,6 +85,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(view -> this.finish());
 
+        radioGroupPriorities.setOnCheckedChangeListener(this);
         fabSaveTask.setOnClickListener(view -> saveNewTask());
     }
 }

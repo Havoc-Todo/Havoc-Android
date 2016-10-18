@@ -32,7 +32,9 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
     private void createTask(String name, String description, TaskPriorityEnum priority) {
         final String USER = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
 
-        Task newTask = new Task(name, description, "", null, USER, 4, priority, TaskStatusEnum.INCOMPLETE, null);
+        final int priorityInt = (priority == null) ? -1 : priority.getPriorityInt();
+
+        Task newTask = new Task(name, description, "", null, USER, 0, priorityInt, TaskStatusEnum.INCOMPLETE, null);
 
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().createNewTask(newTask)
                 .subscribeOn(Schedulers.io())
