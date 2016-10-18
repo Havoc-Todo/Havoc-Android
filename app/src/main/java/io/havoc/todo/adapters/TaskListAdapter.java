@@ -101,7 +101,7 @@ public class TaskListAdapter
         TaskPriorityEnum priorityEnum = item.getPriority();
         if (priorityEnum != null && priorityEnum != TaskPriorityEnum.NONE) {
             switch (item.getPriority()) {
-                case LOW:g
+                case LOW:
                     //Need to get the current textColorSecondary depending on the theme
                     TypedValue typedValue = new TypedValue();
                     Resources.Theme theme = context.getTheme();
