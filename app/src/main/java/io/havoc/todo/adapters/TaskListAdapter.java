@@ -66,16 +66,15 @@ public class TaskListAdapter
         void onItemViewClicked(View v, boolean pinned);
     }
 
-    public static abstract class MyBaseViewHolder extends AbstractDraggableSwipeableItemViewHolder implements ExpandableItemViewHolder {
+    public static abstract class MyBaseViewHolder extends AbstractSwipeableItemViewHolder implements ExpandableItemViewHolder {
         public FrameLayout mContainer;
-//        public View mDragHandle;
+
         public TextView mTextView;
         private int mExpandStateFlags;
 
         public MyBaseViewHolder(View v) {
             super(v);
             mContainer = (FrameLayout) v.findViewById(R.id.container);
-//            mDragHandle = v.findViewById(R.id.drag_handle);
             mTextView = (TextView) v.findViewById(android.R.id.text1);
         }
 
@@ -218,7 +217,6 @@ public class TaskListAdapter
         final int swipeState = holder.getSwipeStateFlags();
         final int expandState = holder.getExpandStateFlags();
 
-        // TODO: remove draggable related stuffs
         if (((expandState & Expandable.STATE_FLAG_IS_UPDATED) != 0) ||
                 ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0)) {
             int bgResId;
@@ -299,40 +297,17 @@ public class TaskListAdapter
             return false;
         }
 
-        final View containerView = holder.mContainer;
-
-        final int offsetX = containerView.getLeft() + (int) (ViewCompat.getTranslationX(containerView) + 0.5f);
-        final int offsetY = containerView.getTop() + (int) (ViewCompat.getTranslationY(containerView) + 0.5f);
-
-        return !ViewUtils.hitTest(dragHandleView, x - offsetX, y - offsetY);
+        return true;
     }
 
-
-    @Override
-    public void onMoveGroupItem(int fromGroupPosition, int toGroupPosition) {
-        mProvider.moveGroupItem(fromGroupPosition, toGroupPosition);
-    }
-
-    @Override
-    public void onMoveChildItem(int fromGroupPosition, int fromChildPosition, int toGroupPosition, int toChildPosition) {
-        mProvider.moveChildItem(fromGroupPosition, fromChildPosition, toGroupPosition, toChildPosition);
-    }
 
     @Override
     public int onGetGroupItemSwipeReactionType(MyGroupViewHolder holder, int groupPosition, int x, int y) {
-        if (onCheckGroupCanStartDrag(holder, groupPosition, x, y)) {
-            return Swipeable.REACTION_CAN_NOT_SWIPE_BOTH_H;
-        }
-
         return Swipeable.REACTION_CAN_SWIPE_BOTH_H;
     }
 
     @Override
     public int onGetChildItemSwipeReactionType(MyChildViewHolder holder, int groupPosition, int childPosition, int x, int y) {
-        if (onCheckChildCanStartDrag(holder, groupPosition, childPosition, x, y)) {
-            return Swipeable.REACTION_CAN_NOT_SWIPE_BOTH_H;
-        }
-
         return Swipeable.REACTION_CAN_SWIPE_BOTH_H;
     }
 
@@ -493,15 +468,6 @@ public class TaskListAdapter
         mEventListener = eventListener;
     }
 
-    private interface Swipeable extends SwipeableItemConstants {
-        //nothing
-    }
-
-    public interface EventListener {
-        void onItemRemoved(int position);
-
-        void onItemViewClicked(View v);
-    }
 
     static class ViewHolder extends AbstractSwipeableItemViewHolder {
         @BindView(R.id.container)
