@@ -15,10 +15,11 @@ import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.presenter.MainActivityPresenter;
 import io.havoc.todo.view.MainActivityView;
+import io.havoc.todo.view.fragments.ListFragment;
 
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 
-    //    private static final String FRAGMENT_LIST_VIEW = "List view";
+    public static final String FRAGMENT_TASK_LIST = "Task List";
     public boolean refreshList = false; //whether or not to refresh the List
     @BindView(R.id.fab_add)
     public FloatingActionButton fabNewTask;
@@ -57,10 +58,10 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
 
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new ListFragment(), FRAGMENT_LIST_VIEW)
-//                    .commit();
-//        }
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.task_fragment_container, new ListFragment(), FRAGMENT_TASK_LIST)
+                    .commit();
+        }
     }
 }

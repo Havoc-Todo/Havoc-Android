@@ -19,13 +19,11 @@
             app:titleTextColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
-    <fragment
-        android:id="@+id/layout_list_fragment"
-        android:name="io.havoc.todo.view.fragments.ListFragment"
+    <FrameLayout
+        android:id="@+id/task_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header"
-        tools:layout="@layout/fragment_recycler_task_list" />
+        android:layout_below="@+id/header" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add"
