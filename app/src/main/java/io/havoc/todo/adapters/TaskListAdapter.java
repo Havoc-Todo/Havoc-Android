@@ -2,13 +2,13 @@ package io.havoc.todo.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
@@ -249,9 +249,9 @@ public class TaskListAdapter
         @BindView(R.id.container)
         FrameLayout mContainer;
         @BindView(android.R.id.text1)
-        TextView mTaskNameText;
+        AppCompatTextView mTaskNameText;
         @BindView(R.id.priority_text)
-        TextView mTaskPriorityText;
+        AppCompatTextView mTaskPriorityText;
 
         ViewHolder(View v) {
             super(v);
