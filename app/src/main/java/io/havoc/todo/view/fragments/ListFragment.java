@@ -1,10 +1,6 @@
 package io.havoc.todo.view.fragments;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
@@ -32,12 +29,14 @@ import io.havoc.todo.adapters.TaskListAdapter;
 import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.ListFragmentPresenter;
-import io.havoc.todo.util.LogUtil;
 import io.havoc.todo.view.ListFragmentView;
 import io.havoc.todo.view.activities.MainActivity;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView>
-        implements ListFragmentView, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+        implements ListFragmentView,
+        SwipeRefreshLayout.OnRefreshListener,
+        RecyclerViewClickListener {
+
     @BindView(R.id.rv_task_list)
     public RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
@@ -72,9 +71,15 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 
     @Override
     public void recyclerViewListClicked(View v, int position) {
-        //TODO, fill this method out
+        DetailItemFragment dif = new DetailItemFragment();
 
-        LogUtil.v(position + " item clicked!");
+        Bundle args = new Bundle();
+        args.putString("task", new Gson().toJson(mTaskListAdapter.getItem(position)));
+        dif.setArguments(args);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, dif, "detail fragment")
+                .commit();
     }
 
     @Override
@@ -101,18 +106,6 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        BroadcastReceiver mBroadcastReciever = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, new DetailItemFragment(), "detail fragment")
-                        .commit();
-            }
-        };
-
-        final String intent = "START_LIST_FRAGMENT";
-        getContext().registerReceiver(mBroadcastReciever, new IntentFilter(intent));
 
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 

@@ -123,6 +123,10 @@ public class TaskListAdapter
         return tasks.size();
     }
 
+    public Task getItem(int position) {
+        return tasks.get(position);
+    }
+
     @Override
     public long getItemId(int position) {
         /**
