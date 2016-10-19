@@ -51,7 +51,9 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         final String taskName = editTextName.getText().toString();
         final String taskDesc = editTextDescription.getText().toString();
 
-        getPresenter().saveNewTaskButtonClicked(taskName, taskDesc, selectedTaskPriority);
+        //If there was no selected priority, pass in TaskPriorityEnum.NONE
+        getPresenter().saveNewTaskButtonClicked(taskName, taskDesc,
+                (selectedTaskPriority == null) ? TaskPriorityEnum.NONE : selectedTaskPriority);
 
         //Needed so we know to refresh the list once we return to it
         Intent returnIntent = new Intent();
@@ -68,8 +70,6 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
             selectedTaskPriority = TaskPriorityEnum.MEDIUM;
         } else if (checkedId == radioButtonPriorityHigh.getId()) {
             selectedTaskPriority = TaskPriorityEnum.HIGH;
-        } else {
-            selectedTaskPriority = TaskPriorityEnum.NONE;
         }
     }
 
@@ -86,6 +86,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         toolbar.setNavigationOnClickListener(view -> this.finish());
 
         radioGroupPriorities.setOnCheckedChangeListener(this);
+
         fabSaveTask.setOnClickListener(view -> saveNewTask());
     }
 }

@@ -71,8 +71,9 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 
     @Override
     public void recyclerViewListClicked(View v, int position) {
-        DetailItemFragment dif = new DetailItemFragment();
 
+        //Put the clicked item into a Bundle for the next fragment to consume
+        DetailItemFragment dif = new DetailItemFragment();
         Bundle args = new Bundle();
         args.putString("task", new Gson().toJson(mTaskListAdapter.getItem(position)));
         dif.setArguments(args);

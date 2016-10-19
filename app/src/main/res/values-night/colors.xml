@@ -9,6 +9,7 @@
 
     <!--App colors-->
     <color name="window_background">@color/md_grey_850</color>
+    <color name="task_detail_background">@color/md_grey_700</color>
 
     <!--Task List colors-->
     <color name="bg_swipe_item_neutral">@color/md_grey_800</color>
