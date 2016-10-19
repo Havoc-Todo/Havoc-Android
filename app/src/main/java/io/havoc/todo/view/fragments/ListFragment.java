@@ -78,7 +78,8 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         dif.setArguments(args);
 
         getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, dif, "Detail fragment")
+                .add(R.id.task_detail_fragment_container, dif, "Detail fragment")
+                .addToBackStack(MainActivity.FRAGMENT_TASK_LIST)
                 .commit();
     }
 
