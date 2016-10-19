@@ -38,7 +38,7 @@ public class TaskListAdapter
     private TiPresenter presenter;
     private Context context;
     private List<Task> tasks;
-    private RecyclerViewClickListener itemListener;
+    private static RecyclerViewClickListener itemListener;
 
     public TaskListAdapter(TiPresenter presenter, RecyclerViewClickListener itemListener) {
         this.presenter = presenter;
@@ -177,25 +177,6 @@ public class TaskListAdapter
         //nothing
     }
 
-    static class ViewHolder extends AbstractSwipeableItemViewHolder {
-        @BindView(R.id.container)
-        FrameLayout mContainer;
-        @BindView(android.R.id.text1)
-        TextView mTaskNameText;
-        @BindView(R.id.priority_text)
-        TextView mTaskPriorityText;
-
-        ViewHolder(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
-        }
-
-        @Override
-        public View getSwipeableContainerView() {
-            return mContainer;
-        }
-    }
-
     /**
      * Action to perform when swiping LEFT on an item
      */
@@ -257,6 +238,32 @@ public class TaskListAdapter
             super.onCleanUp();
             // clear the references
             mAdapter = null;
+        }
+    }
+
+    static class ViewHolder extends AbstractSwipeableItemViewHolder implements View.OnClickListener {
+        @BindView(R.id.container)
+        FrameLayout mContainer;
+        @BindView(android.R.id.text1)
+        TextView mTaskNameText;
+        @BindView(R.id.priority_text)
+        TextView mTaskPriorityText;
+
+        ViewHolder(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+
+            mContainer.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
+        }
+
+        @Override
+        public View getSwipeableContainerView() {
+            return mContainer;
         }
     }
 }

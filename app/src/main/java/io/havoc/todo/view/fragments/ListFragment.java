@@ -32,6 +32,7 @@ import io.havoc.todo.adapters.TaskListAdapter;
 import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.ListFragmentPresenter;
+import io.havoc.todo.util.LogUtil;
 import io.havoc.todo.view.ListFragmentView;
 import io.havoc.todo.view.activities.MainActivity;
 
@@ -72,6 +73,8 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @Override
     public void recyclerViewListClicked(View v, int position) {
         //TODO, fill this method out
+
+        LogUtil.v(position + " item clicked!");
     }
 
     @Override
