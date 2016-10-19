@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
+import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.TaskPriorityEnum;
 import io.havoc.todo.presenter.ListFragmentPresenter;
@@ -37,9 +38,11 @@ public class TaskListAdapter
     private TiPresenter presenter;
     private Context context;
     private List<Task> tasks;
+    private RecyclerViewClickListener itemListener;
 
-    public TaskListAdapter(TiPresenter presenter) {
+    public TaskListAdapter(TiPresenter presenter, RecyclerViewClickListener itemListener) {
         this.presenter = presenter;
+        this.itemListener = itemListener;
         tasks = new ArrayList<>();
 
         // SwipeableItemAdapter requires stable ID, and also

@@ -29,13 +29,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.adapters.TaskListAdapter;
+import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.ListFragmentPresenter;
 import io.havoc.todo.view.ListFragmentView;
 import io.havoc.todo.view.activities.MainActivity;
 
 public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragmentView>
-        implements ListFragmentView, SwipeRefreshLayout.OnRefreshListener {
+        implements ListFragmentView, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     @BindView(R.id.rv_task_list)
     public RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
@@ -66,6 +67,11 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @Override
     public void onRefresh() {
         getPresenter().loadTaskList();
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        //TODO, fill this method out
     }
 
     @Override
@@ -116,7 +122,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
         //adapter
-        mTaskListAdapter = new TaskListAdapter(getPresenter());
+        mTaskListAdapter = new TaskListAdapter(getPresenter(), this);
         mAdapter = mTaskListAdapter;
 
         // wrap for swiping
