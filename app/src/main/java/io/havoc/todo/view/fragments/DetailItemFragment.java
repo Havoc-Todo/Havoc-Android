@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,14 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.google.gson.Gson;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.model.Task;
+import io.havoc.todo.presenter.DetailItemFragmentPresenter;
+import io.havoc.todo.util.TiDialogFragment;
+import io.havoc.todo.view.DetailItemFragmentView;
 
-public class DetailItemFragment extends AppCompatDialogFragment {
+public class DetailItemFragment
+        extends TiDialogFragment<DetailItemFragmentPresenter, DetailItemFragmentView>
+        implements DetailItemFragmentView {
 
     @BindView(R.id.task_detail_name)
     AppCompatTextView taskDetailNameText;
@@ -34,6 +36,14 @@ public class DetailItemFragment extends AppCompatDialogFragment {
     AppCompatTextView taskDetailPriorityText;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    Task task; //the current Task being detailed
+
+    @NonNull
+    @Override
+    public DetailItemFragmentPresenter providePresenter() {
+        return new DetailItemFragmentPresenter();
+    }
 
     @NonNull
     @Override
@@ -50,9 +60,7 @@ public class DetailItemFragment extends AppCompatDialogFragment {
         ButterKnife.bind(this, view);
 
         //Get the Json back and parse it as a Task
-        Bundle bundle = getArguments();
-        final String taskAsJson = bundle.getString("task");
-        Task task = new Gson().fromJson(taskAsJson, Task.class);
+        task = getPresenter().getTaskFromBundle(getArguments());
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -83,6 +91,8 @@ public class DetailItemFragment extends AppCompatDialogFragment {
 
         if (id == R.id.action_delete) {
             // handle confirmation button click here
+            getPresenter().deleteTask(task);
+            dismiss();
             return true;
         } else if (id == android.R.id.home) {
             //closes the dialog
