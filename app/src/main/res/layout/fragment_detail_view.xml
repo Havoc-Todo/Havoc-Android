@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/task_detail_background"
+    android:clickable="true"
     android:minHeight="425dp"
     android:minWidth="800dp"
-    android:clickable="true"
     tools:context="io.havoc.todo.view.fragments.DetailItemFragment">
 
     <android.support.design.widget.AppBarLayout
@@ -18,9 +18,11 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            style="@style/ToolbarStyle"
             android:layout_height="@dimen/toolbar_tall_height"
-            android:background="?attr/colorPrimary">
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/task_detail_name"
