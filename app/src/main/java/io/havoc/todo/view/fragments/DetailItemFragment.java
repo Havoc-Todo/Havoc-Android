@@ -24,9 +24,6 @@ import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.model.Task;
 
-//public class DetailItemFragment extends TiFragment<DetailItemFragmentPresenter, DetailItemView>
-//        implements DetailItemView {
-
 public class DetailItemFragment extends AppCompatDialogFragment {
 
     @BindView(R.id.task_detail_name)
