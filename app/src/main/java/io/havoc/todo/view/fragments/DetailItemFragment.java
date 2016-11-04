@@ -3,6 +3,7 @@ package io.havoc.todo.view.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -37,6 +38,7 @@ public class DetailItemFragment extends AppCompatDialogFragment {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
