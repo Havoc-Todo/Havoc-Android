@@ -112,7 +112,7 @@ public class HavocService {
          * @return status of transaction
          */
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("task/delete/{task_id}/")
+        @POST("task/delete/{task_id}")
         Observable<Boolean> deleteTask(@Path("task_id") String taskID);
 
         /**
