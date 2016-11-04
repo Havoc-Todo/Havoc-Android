@@ -2,13 +2,13 @@ package io.havoc.todo.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
+import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.TaskPriorityEnum;
 import io.havoc.todo.presenter.ListFragmentPresenter;
@@ -37,11 +38,11 @@ public class TaskListAdapter
     private TiPresenter presenter;
     private Context context;
     private List<Task> tasks;
-    private View.OnClickListener mItemViewOnClickListener;
-    private View.OnClickListener mSwipeableViewContainerOnClickListener;
+    private static RecyclerViewClickListener itemListener;
 
-    public TaskListAdapter(TiPresenter presenter) {
+    public TaskListAdapter(TiPresenter presenter, RecyclerViewClickListener itemListener) {
         this.presenter = presenter;
+        this.itemListener = itemListener;
         tasks = new ArrayList<>();
 
         // SwipeableItemAdapter requires stable ID, and also
@@ -68,12 +69,6 @@ public class TaskListAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Task item = tasks.get(position);
-
-        // set listeners
-        // (if the item is *pinned*, click event comes to the itemView)
-        holder.itemView.setOnClickListener(mItemViewOnClickListener);
-        // (if the item is *not pinned*, click event comes to the mContainer)
-        holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         //set Task name
         holder.mTaskNameText.setText(item.getName());
@@ -128,6 +123,10 @@ public class TaskListAdapter
         return tasks.size();
     }
 
+    public Task getItem(int position) {
+        return tasks.get(position);
+    }
+
     @Override
     public long getItemId(int position) {
         /**
@@ -180,25 +179,6 @@ public class TaskListAdapter
 
     private interface Swipeable extends SwipeableItemConstants {
         //nothing
-    }
-
-    static class ViewHolder extends AbstractSwipeableItemViewHolder {
-        @BindView(R.id.container)
-        FrameLayout mContainer;
-        @BindView(android.R.id.text1)
-        TextView mTaskNameText;
-        @BindView(R.id.priority_text)
-        TextView mTaskPriorityText;
-
-        ViewHolder(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
-        }
-
-        @Override
-        public View getSwipeableContainerView() {
-            return mContainer;
-        }
     }
 
     /**
@@ -262,6 +242,32 @@ public class TaskListAdapter
             super.onCleanUp();
             // clear the references
             mAdapter = null;
+        }
+    }
+
+    static class ViewHolder extends AbstractSwipeableItemViewHolder implements View.OnClickListener {
+        @BindView(R.id.container)
+        FrameLayout mContainer;
+        @BindView(android.R.id.text1)
+        AppCompatTextView mTaskNameText;
+        @BindView(R.id.priority_text)
+        AppCompatTextView mTaskPriorityText;
+
+        ViewHolder(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+
+            mContainer.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
+        }
+
+        @Override
+        public View getSwipeableContainerView() {
+            return mContainer;
         }
     }
 }

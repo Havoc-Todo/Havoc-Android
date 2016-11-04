@@ -9,6 +9,7 @@
 
     <!--Toolbar dimens-->
     <dimen name="toolbar_normal_height">56dp</dimen>
+    <dimen name="toolbar_tall_height">128dp</dimen>
 
     <!--FloatingActionButton dimens-->
     <dimen name="fab_padding">16dp</dimen>
