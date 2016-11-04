@@ -11,7 +11,6 @@ import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
 
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.service.HavocService;
-import io.havoc.todo.util.LogUtil;
 import io.havoc.todo.view.DetailItemFragmentView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -31,7 +30,6 @@ public class DetailItemFragmentPresenter extends TiPresenter<DetailItemFragmentV
         return (new Gson().fromJson(taskAsJson, Task.class));
     }
 
-
     /**
      * Deletes a Task
      *
@@ -43,7 +41,7 @@ public class DetailItemFragmentPresenter extends TiPresenter<DetailItemFragmentV
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxTiPresenterUtils.deliverLatestToView(this))
                 .subscribe(x -> {
-                    LogUtil.v(x.toString());
+                    //Do nothing
                 }, Throwable::printStackTrace)
         );
     }
