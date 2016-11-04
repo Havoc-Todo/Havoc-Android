@@ -4,6 +4,7 @@ package io.havoc.todo.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,14 +75,14 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     public void recyclerViewListClicked(View v, int position) {
 
         //Put the clicked item into a Bundle for the next fragment to consume
-        DetailItemFragment dif = new DetailItemFragment();
+        DialogFragment detailItemFragment = new DetailItemFragment();
         Bundle args = new Bundle();
         args.putString("task", new Gson().toJson(mTaskListAdapter.getItem(position)));
-        dif.setArguments(args);
+        detailItemFragment.setArguments(args);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .add(R.id.task_detail_fragment_container, dif)
+                .add(R.id.task_detail_fragment_container, detailItemFragment)
                 .addToBackStack(null)
                 .commit();
 

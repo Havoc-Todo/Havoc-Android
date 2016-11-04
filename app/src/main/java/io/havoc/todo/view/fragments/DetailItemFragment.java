@@ -41,6 +41,8 @@ public class DetailItemFragment extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
         return dialog;
     }
 
@@ -49,10 +51,6 @@ public class DetailItemFragment extends AppCompatDialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail_view, container, false);
         ButterKnife.bind(this, view);
-
-        //Will close the dialog when touching outside the Dialog area
-//        this.getDialog().setCanceledOnTouchOutside(true);
-        setCancelable(true);
 
         //Get the Json back and parse it as a Task
         Bundle bundle = getArguments();
