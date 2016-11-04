@@ -1,26 +1,32 @@
 package io.havoc.todo.view.fragments;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.google.gson.Gson;
-
-import net.grandcentrix.thirtyinch.TiFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.model.Task;
-import io.havoc.todo.presenter.DetailItemFragmentPresenter;
-import io.havoc.todo.view.DetailItemView;
 
-public class DetailItemFragment extends TiFragment<DetailItemFragmentPresenter, DetailItemView>
-        implements DetailItemView {
+//public class DetailItemFragment extends TiFragment<DetailItemFragmentPresenter, DetailItemView>
+//        implements DetailItemView {
+
+public class DetailItemFragment extends AppCompatDialogFragment {
 
     @BindView(R.id.task_detail_name)
     AppCompatTextView taskDetailNameText;
@@ -28,29 +34,67 @@ public class DetailItemFragment extends TiFragment<DetailItemFragmentPresenter, 
     AppCompatTextView taskDetailDescriptionText;
     @BindView(R.id.task_detail_priority)
     AppCompatTextView taskDetailPriorityText;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    @NonNull
     @Override
-    public DetailItemFragmentPresenter providePresenter() {
-        return new DetailItemFragmentPresenter();
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_detail_view, container, false);
         ButterKnife.bind(this, view);
+
+        //Will close the dialog when touching outside the Dialog area
+//        this.getDialog().setCanceledOnTouchOutside(true);
+        setCancelable(true);
 
         //Get the Json back and parse it as a Task
         Bundle bundle = getArguments();
         final String taskAsJson = bundle.getString("task");
         Task task = new Gson().fromJson(taskAsJson, Task.class);
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.close);
+        }
+        setHasOptionsMenu(true);
+
         taskDetailNameText.setText(task.getName());
         taskDetailDescriptionText.setText(task.getDescription());
         taskDetailPriorityText.setText(task.getPriority().toString());
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        getActivity().getMenuInflater().inflate(R.menu.menu_detail_view, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete) {
+            // handle confirmation button click here
+            return true;
+        } else if (id == android.R.id.home) {
+            //closes the dialog
+            dismiss();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

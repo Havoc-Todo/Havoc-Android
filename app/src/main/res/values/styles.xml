@@ -13,6 +13,10 @@
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
+    <style name="AppTheme.PopUpOverlay" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!--Nothing yet...-->
+    </style>
+
     <style name="ToolbarStyle" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:layout_height">@dimen/toolbar_normal_height</item>
         <item name="android:layout_width">match_parent</item>

@@ -4,6 +4,7 @@ package io.havoc.todo.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,9 +80,16 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         dif.setArguments(args);
 
         getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.task_detail_fragment_container, dif, "Detail fragment")
-                .addToBackStack(MainActivity.FRAGMENT_TASK_LIST)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(R.id.task_detail_fragment_container, dif)
+                .addToBackStack(null)
                 .commit();
+
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        DetailItemFragment newFragment = new DetailItemFragment();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//        transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
     }
 
     @Override
