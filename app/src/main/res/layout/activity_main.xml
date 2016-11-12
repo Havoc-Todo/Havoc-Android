@@ -31,7 +31,7 @@
         android:layout_below="@+id/header" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_save"
+        android:id="@+id/fab_add"
         style="@style/FabStyle"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
