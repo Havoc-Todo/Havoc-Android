@@ -76,9 +76,17 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radio_button_priority_none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/priority_none" />
+
+            <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/radio_button_priority_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="@string/priority_low" />
 
             <android.support.v7.widget.AppCompatRadioButton
