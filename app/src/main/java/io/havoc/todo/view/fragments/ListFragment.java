@@ -80,17 +80,11 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         args.putString("task", new Gson().toJson(mTaskListAdapter.getItem(position)));
         detailItemFragment.setArguments(args);
 
-//        if (!getResources().getBoolean(R.bool.isTablet)) {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(detailItemFragment, "Lol")
-                    .addToBackStack(null)
-                    .commit();
-//        }
-
-//        if (getResources().getBoolean(R.bool.isTablet)) {
-//            detailItemFragment.show(getActivity().getSupportFragmentManager(), "Detail Item View");
-//        }
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(detailItemFragment, "Detail Item dialog")
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

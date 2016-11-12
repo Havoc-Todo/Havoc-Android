@@ -50,6 +50,16 @@ public class DetailItemFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //if the device is a phone, make the Dialog fullscreen
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            final int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            final int height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setLayout(width, height);
+            }
+        }
         return dialog;
     }
 
