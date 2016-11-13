@@ -5,12 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/task_detail_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="16dp" />
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/header"
         android:layout_width="match_parent"

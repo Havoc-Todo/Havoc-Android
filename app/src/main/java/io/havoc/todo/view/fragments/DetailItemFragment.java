@@ -26,7 +26,7 @@ import io.havoc.todo.view.DetailItemFragmentView;
 
 public class DetailItemFragment
         extends TiDialogFragment<DetailItemFragmentPresenter, DetailItemFragmentView>
-        implements DetailItemFragmentView {
+        implements DetailItemFragmentView, View.OnClickListener {
 
     @BindView(R.id.task_detail_name)
     public AppCompatTextView taskDetailNameText;
@@ -94,6 +94,14 @@ public class DetailItemFragment
         taskDetailPriorityText.setText(task.getPriority().toString());
 
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_edit:
+                break;
+        }
     }
 
     @Override
