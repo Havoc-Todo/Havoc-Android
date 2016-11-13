@@ -29,15 +29,15 @@ public class DetailItemFragment
         implements DetailItemFragmentView {
 
     @BindView(R.id.task_detail_name)
-    AppCompatTextView taskDetailNameText;
+    public AppCompatTextView taskDetailNameText;
     @BindView(R.id.task_detail_description)
-    AppCompatTextView taskDetailDescriptionText;
+    public AppCompatTextView taskDetailDescriptionText;
     @BindView(R.id.task_detail_priority)
-    AppCompatTextView taskDetailPriorityText;
+    public AppCompatTextView taskDetailPriorityText;
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    public Toolbar toolbar;
 
-    Task task; //the current Task being detailed
+    private Task task; //the current Task being detailed
 
     @NonNull
     @Override
@@ -51,16 +51,23 @@ public class DetailItemFragment
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        //if the device is a phone, make the Dialog fullscreen
+        return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //Full width/height of screen dialog if the device is a phone
         if (!getResources().getBoolean(R.bool.isTablet)) {
             final int width = ViewGroup.LayoutParams.MATCH_PARENT;
             final int height = ViewGroup.LayoutParams.MATCH_PARENT;
 
+            Dialog dialog = getDialog();
             if (dialog.getWindow() != null) {
                 dialog.getWindow().setLayout(width, height);
             }
         }
-        return dialog;
     }
 
     @Override
