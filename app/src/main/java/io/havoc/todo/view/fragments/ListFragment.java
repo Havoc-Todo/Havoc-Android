@@ -87,7 +87,6 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .add(detailItemFragment, "Detail Item dialog")
-                .addToBackStack(null)
                 .commit();
     }
 
