@@ -13,5 +13,6 @@ public enum PrefKey {
      * String: SAMPLE_KEY, SAMPLE_STR or just SAMPLE
      */
 
-    IS_AUTH //whether or not the user is authenticated
+    IS_AUTH, //whether or not the user is authenticated
+    GOOGLE_USER_EMAIL //user's Google email address
 }

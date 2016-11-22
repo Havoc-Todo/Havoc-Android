@@ -1,8 +1,6 @@
 package io.havoc.todo.presenter;
 
 
-import android.content.Intent;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -20,9 +18,4 @@ public class LoginActivityPresenter extends TiPresenter<LoginActivityView> {
                 .requestEmail()
                 .build();
     }
-
-    public void signInToGoogle() {
-        Intent
-    }
-
 }

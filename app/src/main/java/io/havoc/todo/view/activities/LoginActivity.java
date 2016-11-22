@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -15,8 +16,10 @@ import net.grandcentrix.thirtyinch.TiActivity;
 
 import butterknife.BindView;
 import io.havoc.todo.R;
+import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.presenter.LoginActivityPresenter;
 import io.havoc.todo.util.LogUtil;
+import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.view.LoginActivityView;
 
 public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActivityView>
@@ -66,6 +69,17 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
     public void handleGoogleSignInResult(GoogleSignInResult result) {
         LogUtil.d("handleSignInResult:" + result.isSuccess());
 
+        if (result.isSuccess()) {
+            GoogleSignInAccount account = result.getSignInAccount();
+            if (account != null) {
+                AuthSharedPrefs.getInstance(this).put(PrefKey.GOOGLE_USER_EMAIL, account.getEmail());
+            }
+
+            AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, true);
+        } else {
+            AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, false);
+            AuthSharedPrefs.getInstance(this).remove(PrefKey.GOOGLE_USER_EMAIL);
+        }
 //        if (result.isSuccess()) {
 //            // Signed in successfully, show authenticated UI.
 //            GoogleSignInAccount acct = result.getSignInAccount();
