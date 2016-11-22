@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Havoc</string>
 
+    <!--Login Screen-->
+    <string name="welcome">Welcome</string>
+    <string name="sign_in">Please sign-in below</string>
+
     <!--New Task-->
     <string name="toolbar_new_task_title">New task</string>
     <string name="hint_task_name">Name</string>
