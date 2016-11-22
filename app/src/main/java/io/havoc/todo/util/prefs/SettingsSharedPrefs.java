@@ -4,6 +4,8 @@ package io.havoc.todo.util.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import io.havoc.todo.model.PrefKey;
+
 /*
  * A Singleton for managing SharedPreferences.
  *
@@ -15,8 +17,8 @@ import android.content.SharedPreferences;
  * 
  * Usage:
  * 
- * int sampleInt = SettingsSharedPrefs.getInstance(context).getInt(Key.SAMPLE_INT);
- * SettingsSharedPrefs.getInstance(context).set(Key.SAMPLE_INT, sampleInt);
+ * int sampleInt = SettingsSharedPrefs.getInstance(context).getInt(PrefKey.SAMPLE_INT);
+ * SettingsSharedPrefs.getInstance(context).set(PrefKey.SAMPLE_INT, sampleInt);
  * 
  */
 public class SettingsSharedPrefs {
@@ -49,48 +51,48 @@ public class SettingsSharedPrefs {
     /**
      * Convenience method for storing Strings
      *
-     * @param key The enum of the preference to store
+     * @param prefKey The enum of the preference to store
      * @param val The new value for the preference
      */
-    public void put(Key key, String val) {
+    public void put(PrefKey prefKey, String val) {
         doEdit();
-        mEditor.putString(key.name(), val);
+        mEditor.putString(prefKey.name(), val);
         doCommit();
     }
 
     /**
      * Convenience method for storing ints
      *
-     * @param key The enum of the preference to store
+     * @param prefKey The enum of the preference to store
      * @param val The new value for the preference
      */
-    public void put(Key key, int val) {
+    public void put(PrefKey prefKey, int val) {
         doEdit();
-        mEditor.putInt(key.name(), val);
+        mEditor.putInt(prefKey.name(), val);
         doCommit();
     }
 
     /**
      * Convenience method for storing booleans
      *
-     * @param key The enum of the preference to store
+     * @param prefKey The enum of the preference to store
      * @param val The new value for the preference
      */
-    public void put(Key key, boolean val) {
+    public void put(PrefKey prefKey, boolean val) {
         doEdit();
-        mEditor.putBoolean(key.name(), val);
+        mEditor.putBoolean(prefKey.name(), val);
         doCommit();
     }
 
     /**
      * Convenience method for storing floats
      *
-     * @param key The enum of the preference to store
+     * @param prefKey The enum of the preference to store
      * @param val The new value for the preference
      */
-    public void put(Key key, float val) {
+    public void put(PrefKey prefKey, float val) {
         doEdit();
-        mEditor.putFloat(key.name(), val);
+        mEditor.putFloat(prefKey.name(), val);
         doCommit();
     }
 
@@ -101,12 +103,12 @@ public class SettingsSharedPrefs {
      * SharedPreferences does not handle doubles so casting to and from Strings is
      * needed.
      *
-     * @param key The enum of the preference to store
+     * @param prefKey The enum of the preference to store
      * @param val The new value for the preference
      */
-    public void put(Key key, double val) {
+    public void put(PrefKey prefKey, double val) {
         doEdit();
-        mEditor.putString(key.name(), String.valueOf(val));
+        mEditor.putString(prefKey.name(), String.valueOf(val));
         doCommit();
     }
 
@@ -115,77 +117,77 @@ public class SettingsSharedPrefs {
     /**
      * Convenience method for retrieving Strings
      *
-     * @param key The enum of the preference to fetch
+     * @param prefKey The enum of the preference to fetch
      */
-    public String getString(Key key) {
-        return mPref.getString(key.name(), null);
+    public String getString(PrefKey prefKey) {
+        return mPref.getString(prefKey.name(), null);
     }
 
     /**
      * Convenience method for retrieving Strings
      *
-     * @param key          The enum of the preference to fetch
-     * @param defaultValue to return if the key doesn't have a value
+     * @param prefKey          The enum of the preference to fetch
+     * @param defaultValue to return if the prefKey doesn't have a value
      */
-    public String getString(Key key, String defaultValue) {
-        return mPref.getString(key.name(), defaultValue);
+    public String getString(PrefKey prefKey, String defaultValue) {
+        return mPref.getString(prefKey.name(), defaultValue);
     }
 
     /**
      * Convenience method for retrieving ints
      *
-     * @param key The enum of the preference to fetch
+     * @param prefKey The enum of the preference to fetch
      */
-    public int getInt(Key key) {
-        return mPref.getInt(key.name(), 0);
+    public int getInt(PrefKey prefKey) {
+        return mPref.getInt(prefKey.name(), 0);
     }
 
     /**
      * Convenience method for retrieving ints
      *
-     * @param key          The enum of the preference to fetch
-     * @param defaultValue to return if the key doesn't have a value
+     * @param prefKey          The enum of the preference to fetch
+     * @param defaultValue to return if the prefKey doesn't have a value
      */
-    public int getInt(Key key, int defaultValue) {
-        return mPref.getInt(key.name(), defaultValue);
+    public int getInt(PrefKey prefKey, int defaultValue) {
+        return mPref.getInt(prefKey.name(), defaultValue);
     }
 
     /**
      * Convenience method for retrieving booleans
      *
-     * @param key The enum of the preference to fetch
+     * @param prefKey The enum of the preference to fetch
      */
-    public boolean getBoolean(Key key) {
-        return mPref.getBoolean(key.name(), false);
+    public boolean getBoolean(PrefKey prefKey) {
+        return mPref.getBoolean(prefKey.name(), false);
     }
 
     /**
      * Convenience method for retrieving booleans
      *
-     * @param key          The enum of the preference to fetch
-     * @param defaultValue to return if the key doesn't have a value
+     * @param prefKey          The enum of the preference to fetch
+     * @param defaultValue to return if the prefKey doesn't have a value
      */
-    public boolean getBoolean(Key key, boolean defaultValue) {
-        return mPref.getBoolean(key.name(), defaultValue);
+    public boolean getBoolean(PrefKey prefKey, boolean defaultValue) {
+        return mPref.getBoolean(prefKey.name(), defaultValue);
     }
 
     /**
      * Convenience method for retrieving floats
      *
-     * @param key The enum of the preference to fetch
+     * @param prefKey The enum of the preference to fetch
      */
-    public float getFloat(Key key) {
-        return mPref.getFloat(key.name(), 0);
+    public float getFloat(PrefKey prefKey) {
+        return mPref.getFloat(prefKey.name(), 0);
     }
 
     /**
      * Convenience method for retrieving floats
      *
-     * @param key          The enum of the preference to fetch
-     * @param defaultValue to return if the key doesn't have a value
+     * @param prefKey          The enum of the preference to fetch
+     * @param defaultValue to return if the prefKey doesn't have a value
      */
-    public float getFloat(Key key, float defaultValue) {
-        return mPref.getFloat(key.name(), defaultValue);
+    public float getFloat(PrefKey prefKey, float defaultValue) {
+        return mPref.getFloat(prefKey.name(), defaultValue);
     }
 
     /**
@@ -195,10 +197,10 @@ public class SettingsSharedPrefs {
      * SharedPreferences does not handle doubles so casting to and from Strings is
      * needed.
      *
-     * @param key The enum of the preference to fetch
+     * @param prefKey The enum of the preference to fetch
      */
-    public double getDouble(Key key) {
-        return getDouble(key, 0);
+    public double getDouble(PrefKey prefKey) {
+        return getDouble(prefKey, 0);
     }
 
     /**
@@ -208,27 +210,27 @@ public class SettingsSharedPrefs {
      * SharedPreferences does not handle doubles so casting to and from Strings is
      * needed.
      *
-     * @param key          The enum of the preference to fetch
-     * @param defaultValue to return if the key doesn't have a value
+     * @param prefKey          The enum of the preference to fetch
+     * @param defaultValue to return if the prefKey doesn't have a value
      */
-    public double getDouble(Key key, double defaultValue) {
+    public double getDouble(PrefKey prefKey, double defaultValue) {
         try {
-            return Double.valueOf(mPref.getString(key.name(), String.valueOf(defaultValue)));
+            return Double.valueOf(mPref.getString(prefKey.name(), String.valueOf(defaultValue)));
         } catch (NumberFormatException nfe) {
             return defaultValue;
         }
     }
 
     /**
-     * Remove keys from SharedPreferences
+     * Remove prefKeys from SharedPreferences
      *
-     * @param keys The enum of the key(s) to be removed
+     * @param prefKeys The enum of the key(s) to be removed
      */
-    public void remove(Key... keys) {
+    public void remove(PrefKey... prefKeys) {
         doEdit();
 
-        for (Key key : keys) {
-            mEditor.remove(key.name());
+        for (PrefKey prefKey : prefKeys) {
+            mEditor.remove(prefKey.name());
         }
         doCommit();
     }
@@ -277,19 +279,5 @@ public class SettingsSharedPrefs {
             mEditor.apply();
             mEditor = null;
         }
-    }
-
-    /**
-     * Enum representing the setting names or key for a setting (pref)
-     */
-    public enum Key {
-        /* Recommended naming convention:
-         * ints, floats, doubles, longs:
-         * SAMPLE_NUM or SAMPLE_COUNT or SAMPLE_INT, SAMPLE_LONG etc.
-         *
-         * boolean: IS_SAMPLE, HAS_SAMPLE, CONTAINS_SAMPLE
-         *
-         * String: SAMPLE_KEY, SAMPLE_STR or just SAMPLE
-         */
     }
 }
