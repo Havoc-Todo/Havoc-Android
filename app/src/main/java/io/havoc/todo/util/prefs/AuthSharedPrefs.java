@@ -1,4 +1,4 @@
-package io.havoc.todo.util;
+package io.havoc.todo.util.prefs;
 
 
 import android.content.Context;
@@ -15,18 +15,18 @@ import android.content.SharedPreferences;
  * 
  * Usage:
  * 
- * int sampleInt = SharedPrefsUtil.getInstance(context).getInt(Key.SAMPLE_INT);
- * SharedPrefsUtil.getInstance(context).set(Key.SAMPLE_INT, sampleInt);
+ * int sampleInt = SettingsSharedPrefs.getInstance(context).getInt(Key.SAMPLE_INT);
+ * SettingsSharedPrefs.getInstance(context).set(Key.SAMPLE_INT, sampleInt);
  * 
  */
-public class SharedPrefsUtil {
-    private static final String SETTINGS_NAME = "settings";
-    private static SharedPrefsUtil sSharedPrefs;
+public class AuthSharedPrefs {
+    private static final String SETTINGS_NAME = "auth";
+    private static AuthSharedPrefs sSharedPrefs;
     private SharedPreferences mPref;
     private SharedPreferences.Editor mEditor;
     private boolean mBulkUpdate = false;
 
-    private SharedPrefsUtil(Context context) {
+    private AuthSharedPrefs(Context context) {
         mPref = context.getSharedPreferences(SETTINGS_NAME, Context.MODE_PRIVATE);
     }
 
@@ -37,9 +37,9 @@ public class SharedPrefsUtil {
      * @param context of SharedPrefs
      * @return the SharedPrefs
      */
-    public static SharedPrefsUtil getInstance(Context context) {
+    public static AuthSharedPrefs getInstance(Context context) {
         if (sSharedPrefs == null) {
-            sSharedPrefs = new SharedPrefsUtil(context.getApplicationContext());
+            sSharedPrefs = new AuthSharedPrefs(context.getApplicationContext());
         }
         return sSharedPrefs;
     }
