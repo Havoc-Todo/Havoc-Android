@@ -57,3 +57,4 @@ cd
 # Keystore files
 *.jks
 .signing/
+app/google-services.json
