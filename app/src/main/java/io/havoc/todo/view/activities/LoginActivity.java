@@ -60,8 +60,7 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignInResult(result);
+            handleGoogleSignInResult(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
         }
     }
 
@@ -80,12 +79,6 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
             AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, false);
             AuthSharedPrefs.getInstance(this).remove(PrefKey.GOOGLE_USER_EMAIL);
         }
-//        if (result.isSuccess()) {
-//            // Signed in successfully, show authenticated UI.
-//            GoogleSignInAccount acct = result.getSignInAccount();
-//        } else {
-//            LogUtil.d("handleSignInResult:" + result.isSuccess());
-//        }
     }
 
     @Override
