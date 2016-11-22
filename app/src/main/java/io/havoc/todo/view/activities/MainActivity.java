@@ -19,7 +19,7 @@ import io.havoc.todo.view.fragments.ListFragment;
 
 public class MainActivity extends TiActivity<MainActivityPresenter, MainActivityView> implements MainActivityView {
 
-    public static final String FRAGMENT_TASK_LIST = "Task List";
+    private static final String FRAGMENT_TASK_LIST = "Task List";
     public boolean refreshList = false; //whether or not to refresh the List
     @BindView(R.id.fab_add)
     public FloatingActionButton fabNewTask;
