@@ -22,10 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activities.NewTaskActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" />
+        <activity android:name=".view.activities.LoginActivity"></activity>
     </application>
 
 </manifest>
