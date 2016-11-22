@@ -13,19 +13,25 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name=".view.activities.MainActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation">
+            android:name=".view.activities.ProxyActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.activities.MainActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" />
+        <activity
             android:name=".view.activities.NewTaskActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" />
-        <activity android:name=".view.activities.LoginActivity"></activity>
+        <activity
+            android:name=".view.activities.LoginActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" />
     </application>
 
 </manifest>
