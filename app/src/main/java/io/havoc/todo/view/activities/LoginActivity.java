@@ -14,7 +14,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
-import butterknife.BindView;
 import io.havoc.todo.R;
 import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.presenter.LoginActivityPresenter;
@@ -26,8 +25,6 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
         implements LoginActivityView, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private final int RC_SIGN_IN = 9001;
-    @BindView(R.id.google_sign_in_button)
-    public SignInButton signInButton;
     private GoogleApiClient mGoogleApiClient;
 
     @NonNull
@@ -75,6 +72,7 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
             }
 
             AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, true);
+            startActivity(new Intent(this, MainActivity.class)); //go to the MainActivity
         } else {
             AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, false);
             AuthSharedPrefs.getInstance(this).remove(PrefKey.GOOGLE_USER_EMAIL);
@@ -98,6 +96,8 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
                 .build();
 
         //Set the Google Sign-In button size
+        SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(this);
     }
 }
