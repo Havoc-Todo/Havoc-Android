@@ -73,6 +73,28 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
         );
     }
 
+    //Hacky way to update the task list, silently. This will be used to poll for updates
+    public void silentLoadTaskList() {
+        //get the current USER
+        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.GOOGLE_USER_EMAIL);
+
+        rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(USER)
+                .flatMap(response -> Observable.from(response.getTasks()))
+                //filter out Tasks that are ARCHIVED or DONE
+                .filter(task -> task.getStatus() == TaskStatusEnum.INCOMPLETE)
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxTiPresenterUtils.deliverLatestToView(this))
+                .subscribe(list -> {
+                    mListOfTasks = list;
+                    getView().setTaskList(mListOfTasks);
+                }, throwable -> {
+                    throwable.printStackTrace();
+                })
+        );
+    }
+
     /**
      * Marks a Task as complete by changing it's status to DONE
      *

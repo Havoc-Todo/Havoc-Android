@@ -23,6 +23,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import net.grandcentrix.thirtyinch.TiFragment;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,6 +160,14 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 //        animator.setRemoveDuration(2000);
 //        mRecyclerViewSwipeManager.setMoveToOutsideWindowAnimationDuration(2000);
 //        mRecyclerViewSwipeManager.setReturnToDefaultPositionAnimationDuration(2000);
+
+        //Polls the list for updates to Tasks, hacky AF
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                getPresenter().silentLoadTaskList();
+            }
+        }, 0, 3000);
     }
 
     @Override
