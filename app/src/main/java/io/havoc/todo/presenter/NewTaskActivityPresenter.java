@@ -25,14 +25,20 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
         super.onWakeUp();
     }
 
-    public void saveNewTaskButtonClicked(String name, String description, TaskPriorityEnum priority) {
-        createTask(name, description, priority);
+    public void saveNewTaskButtonClicked(final String user, String name, String description, TaskPriorityEnum priority) {
+        createTask(user, name, description, priority);
     }
 
-    private void createTask(String name, String description, TaskPriorityEnum priority) {
-        final String USER = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
-
-        Task newTask = new Task(name, description, "", null, USER, 0, priority, TaskStatusEnum.INCOMPLETE, null);
+    /**
+     * Creates a new Task
+     *
+     * @param user        ID for the current user
+     * @param name        of this Task
+     * @param description for the Task
+     * @param priority    of the Task
+     */
+    private void createTask(final String user, String name, String description, TaskPriorityEnum priority) {
+        final Task newTask = new Task(name, description, "", null, user, 0, priority, TaskStatusEnum.INCOMPLETE, null);
 
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().createNewTask(newTask)
                 .subscribeOn(Schedulers.io())

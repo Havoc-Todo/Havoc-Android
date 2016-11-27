@@ -53,7 +53,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     @NonNull
     @Override
     public ListFragmentPresenter providePresenter() {
-        return new ListFragmentPresenter();
+        return new ListFragmentPresenter(getContext());
     }
 
     @Override

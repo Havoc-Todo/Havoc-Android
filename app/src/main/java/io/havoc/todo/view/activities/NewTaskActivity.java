@@ -15,8 +15,10 @@ import net.grandcentrix.thirtyinch.TiActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
+import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.model.TaskPriorityEnum;
 import io.havoc.todo.presenter.NewTaskActivityPresenter;
+import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.view.NewTaskActivityView;
 
 public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTaskActivityView> implements NewTaskActivityView, RadioGroup.OnCheckedChangeListener {
@@ -50,9 +52,10 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
     public void saveNewTask() {
         final String taskName = editTextName.getText().toString();
         final String taskDesc = editTextDescription.getText().toString();
+        final String user = AuthSharedPrefs.getInstance(this).getString(PrefKey.GOOGLE_USER_EMAIL);
 
         //If there was no selected priority, pass in TaskPriorityEnum.NONE
-        getPresenter().saveNewTaskButtonClicked(taskName, taskDesc,
+        getPresenter().saveNewTaskButtonClicked(user, taskName, taskDesc,
                 (selectedTaskPriority == null) ? TaskPriorityEnum.NONE : selectedTaskPriority);
 
         //Needed so we know to refresh the list once we return to it

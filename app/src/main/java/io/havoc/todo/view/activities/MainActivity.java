@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -14,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.presenter.MainActivityPresenter;
+import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.view.MainActivityView;
 import io.havoc.todo.view.fragments.ListFragment;
 
@@ -49,6 +52,13 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
     }
 
     @Override
+    public void logout() {
+        AuthSharedPrefs.getInstance(this).clear(); //delete all AuthPrefs
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -63,5 +73,24 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
                     .add(R.id.task_fragment_container, new ListFragment(), FRAGMENT_TASK_LIST)
                     .commit();
         }
+
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                logout();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

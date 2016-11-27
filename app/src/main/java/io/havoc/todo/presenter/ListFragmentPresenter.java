@@ -1,15 +1,19 @@
 package io.havoc.todo.presenter;
 
 
+import android.content.Context;
+
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
 
 import java.util.List;
 
+import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.model.TaskStatusEnum;
 import io.havoc.todo.model.service.HavocService;
+import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.view.ListFragmentView;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -17,9 +21,17 @@ import rx.schedulers.Schedulers;
 
 public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
 
-    final String USER = "57a7bd24-ddf0-5c24-9091-ba331e486dc7";
     private List<Task> mListOfTasks;
     private RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
+    private Context context;
+
+    /**
+     * Constructor for the ListFragmentPresenter
+     * @param context used to access SharedPrefs
+     */
+    public ListFragmentPresenter(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void onWakeUp() {
@@ -38,6 +50,9 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
      */
     public void loadTaskList() {
         getView().setLoading(true);
+
+        //get the current USER
+        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.GOOGLE_USER_EMAIL);
 
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(USER)
                 .flatMap(response -> Observable.from(response.getTasks()))
