@@ -6,7 +6,19 @@ import net.grandcentrix.thirtyinch.TiView;
 public interface NewTaskActivityView extends TiView {
 
     /**
-     * Handles leaving the New Task screen
+     * Handles leaving the New Task screen and creating a new Task
      */
     void saveNewTask();
+
+    /**
+     * Handles leaving the New Task screen and updating an existing Task
+     */
+    void updateTask();
+
+    /**
+     * Setups the fields to be of values from an existing Task
+     *
+     * @param editTaskObject Task that will be edited
+     */
+    void setupEditTask(String editTaskObject);
 }

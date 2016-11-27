@@ -43,6 +43,8 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("addedNewTask", false)) {
                 //Refresh the list upon returning

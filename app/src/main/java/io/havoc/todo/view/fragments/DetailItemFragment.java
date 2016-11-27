@@ -1,9 +1,12 @@
 package io.havoc.todo.view.fragments;
 
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
@@ -16,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.google.gson.Gson;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
@@ -23,6 +28,7 @@ import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.DetailItemFragmentPresenter;
 import io.havoc.todo.util.TiDialogFragment;
 import io.havoc.todo.view.DetailItemFragmentView;
+import io.havoc.todo.view.activities.NewTaskActivity;
 
 public class DetailItemFragment
         extends TiDialogFragment<DetailItemFragmentPresenter, DetailItemFragmentView>
@@ -34,10 +40,12 @@ public class DetailItemFragment
     public AppCompatTextView taskDetailDescriptionText;
     @BindView(R.id.task_detail_priority)
     public AppCompatTextView taskDetailPriorityText;
+    @BindView(R.id.fab_edit)
+    public FloatingActionButton fabEditTask;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
-    private Task task; //the current Task being detailed
+    private Task currentTask; //currently viewed Task
 
     @NonNull
     @Override
@@ -76,9 +84,27 @@ public class DetailItemFragment
         View view = inflater.inflate(R.layout.fragment_detail_view, container, false);
         ButterKnife.bind(this, view);
 
-        //Get the Json back and parse it as a Task
-        task = getPresenter().getTaskFromBundle(getArguments());
+        setupToolbar();
+        fabEditTask.setOnClickListener(this);
 
+        //Get the Json back and parse it as a Task
+        currentTask = getPresenter().getTaskFromBundle(getArguments());
+        setupDetailView(currentTask);
+
+        return view;
+    }
+
+    @Override
+    public void setupDetailView(Task task) {
+        taskDetailNameText.setText(task.getName());
+        taskDetailDescriptionText.setText(task.getDescription());
+        taskDetailPriorityText.setText(task.getPriority().toString());
+    }
+
+    /**
+     * Setups the Toolbar and all that jazz
+     */
+    private void setupToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -88,18 +114,26 @@ public class DetailItemFragment
             actionBar.setHomeAsUpIndicator(R.drawable.close);
         }
         setHasOptionsMenu(true);
-
-        taskDetailNameText.setText(task.getName());
-        taskDetailDescriptionText.setText(task.getDescription());
-        taskDetailPriorityText.setText(task.getPriority().toString());
-
-        return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                currentTask = getPresenter().getTaskFromExtras(data, "updatedTask");
+                setupDetailView(currentTask);
+            }
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab_edit:
+                Intent editActivityIntent = new Intent(getContext(), NewTaskActivity.class);
+                editActivityIntent.putExtra("task", (new Gson()).toJson(currentTask));
+                startActivityForResult(editActivityIntent, 2);
                 break;
         }
     }
@@ -116,7 +150,7 @@ public class DetailItemFragment
 
         if (id == R.id.action_delete) {
             // handle confirmation button click here
-            getPresenter().deleteTask(task);
+            getPresenter().deleteTask(currentTask);
             dismiss();
             return true;
         } else if (id == android.R.id.home) {

@@ -1,6 +1,7 @@
 package io.havoc.todo.presenter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
@@ -31,11 +32,23 @@ public class DetailItemFragmentPresenter extends TiPresenter<DetailItemFragmentV
     }
 
     /**
+     * Gets a Task from an Intent's extras
+     *
+     * @param data      Intent to get the data from
+     * @param extraName name of the extra
+     * @return the Task that was retrieved
+     */
+    public Task getTaskFromExtras(Intent data, String extraName) {
+        return (new Gson()).fromJson(data.getStringExtra(extraName), Task.class);
+    }
+
+
+    /**
      * Deletes a Task
      *
      * @param task to delete
      */
-    public void deleteTask(Task task) {
+    public void deleteTask(final Task task) {
         rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().deleteTask(task.getTaskId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
