@@ -4,9 +4,10 @@
 
     <item
         android:id="@+id/action_sort_priority"
+        android:icon="@drawable/sort"
         android:orderInCategory="1"
         android:title="@string/sort_priority"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_logout"
