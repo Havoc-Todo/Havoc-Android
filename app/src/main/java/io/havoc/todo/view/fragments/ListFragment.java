@@ -29,8 +29,10 @@ import butterknife.ButterKnife;
 import io.havoc.todo.R;
 import io.havoc.todo.adapters.TaskListAdapter;
 import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
+import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.ListFragmentPresenter;
+import io.havoc.todo.util.prefs.SettingsSharedPrefs;
 import io.havoc.todo.view.ListFragmentView;
 import io.havoc.todo.view.activities.MainActivity;
 
@@ -68,7 +70,8 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 
     @Override
     public void onRefresh() {
-        getPresenter().loadTaskList();
+        getPresenter().loadTaskList(SettingsSharedPrefs.getInstance(getContext())
+                .getBoolean(PrefKey.IS_SORTED_PRIORITY, false));
     }
 
     @Override

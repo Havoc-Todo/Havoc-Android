@@ -14,5 +14,7 @@ public enum PrefKey {
      */
 
     IS_AUTH, //whether or not the user is authenticated
-    GOOGLE_USER_EMAIL //user's Google email address
+    GOOGLE_USER_EMAIL, //user's Google email address
+
+    IS_SORTED_PRIORITY //whether or not the list is sorted by priority
 }

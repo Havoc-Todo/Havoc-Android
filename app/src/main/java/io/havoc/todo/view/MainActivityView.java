@@ -11,6 +11,11 @@ public interface MainActivityView extends TiView {
     void launchNewTaskActivity();
 
     /**
+     * Sorts the list by Priority level
+     */
+    void sortByPriority();
+
+    /**
      * Logout of Havoc
      * i.e. remove credentials
      */

@@ -15,8 +15,10 @@ import net.grandcentrix.thirtyinch.TiActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
+import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.presenter.MainActivityPresenter;
 import io.havoc.todo.util.prefs.AuthSharedPrefs;
+import io.havoc.todo.util.prefs.SettingsSharedPrefs;
 import io.havoc.todo.view.MainActivityView;
 import io.havoc.todo.view.fragments.ListFragment;
 
@@ -61,6 +63,16 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
     }
 
     @Override
+    public void sortByPriority() {
+        boolean sortedByPriority = SettingsSharedPrefs.getInstance(this).getBoolean(PrefKey.IS_SORTED_PRIORITY, false);
+        //flip it each time the menu item is selected
+        SettingsSharedPrefs.getInstance(this).put(PrefKey.IS_SORTED_PRIORITY, !sortedByPriority);
+
+        ((ListFragment) (getSupportFragmentManager())
+                .findFragmentByTag(FRAGMENT_TASK_LIST)).getPresenter().loadTaskList(!sortedByPriority);
+    }
+
+    @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -88,6 +100,9 @@ public class MainActivity extends TiActivity<MainActivityPresenter, MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_sort_priority:
+                sortByPriority();
+                return true;
             case R.id.action_logout:
                 logout();
                 return true;

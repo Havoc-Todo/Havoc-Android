@@ -147,17 +147,17 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         currentTask = editTask;
         toolbar.setTitle(getString(R.string.toolbar_edit_task_title));
 
+        editTextName.setText(editTask.getName());
+        editTextDescription.setText(editTask.getDescription());
+
         if (editTask.getPriority() == TaskPriorityEnum.HIGH) {
             radioGroupPriorities.check(R.id.radio_button_priority_high);
         } else if (editTask.getPriority() == TaskPriorityEnum.MEDIUM) {
             radioGroupPriorities.check(R.id.radio_button_priority_medium);
         } else if (editTask.getPriority() == TaskPriorityEnum.LOW) {
             radioGroupPriorities.check(R.id.radio_button_priority_low);
-        } else if (editTask.getPriority() == TaskPriorityEnum.MEDIUM) {
+        } else if (editTask.getPriority() == TaskPriorityEnum.NONE) {
             radioGroupPriorities.check(R.id.radio_button_priority_none);
         }
-
-        editTextName.setText(editTask.getName());
-        editTextDescription.setText(editTask.getDescription());
     }
 }

@@ -6,6 +6,7 @@
     <string name="sign_in">Please sign-in below</string>
 
     <!--Main Activity-->
+    <string name="sort_priority">Sort priority</string>
     <string name="logout">Logout</string>
 
     <!--New Task-->
