@@ -126,7 +126,6 @@ public class DetailItemFragment
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
