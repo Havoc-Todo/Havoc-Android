@@ -1,6 +1,10 @@
 package io.havoc.todo.presenter;
 
 
+import android.content.Intent;
+
+import com.google.gson.Gson;
+
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
@@ -37,6 +41,17 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
      */
     public void updateTaskButtonClicked(final Task updatedTask) {
         updateTask(updatedTask);
+    }
+
+    /**
+     * Gets a Task from an Intent's extras
+     *
+     * @param data      Intent to get the data from
+     * @param extraName name of the extra
+     * @return the Task that was retrieved
+     */
+    public Task getTaskFromExtras(Intent data, String extraName) {
+        return (new Gson()).fromJson(data.getStringExtra(extraName), Task.class);
     }
 
     /**

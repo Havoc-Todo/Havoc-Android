@@ -132,7 +132,7 @@ public class DetailItemFragment
         switch (v.getId()) {
             case R.id.fab_edit:
                 Intent editActivityIntent = new Intent(getContext(), NewTaskActivity.class);
-                editActivityIntent.putExtra("task", (new Gson()).toJson(currentTask));
+                editActivityIntent.putExtra("taskToEdit", (new Gson()).toJson(currentTask));
                 startActivityForResult(editActivityIntent, 2);
                 break;
         }

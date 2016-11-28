@@ -3,6 +3,8 @@ package io.havoc.todo.view;
 
 import net.grandcentrix.thirtyinch.TiView;
 
+import io.havoc.todo.model.Task;
+
 public interface NewTaskActivityView extends TiView {
 
     /**
@@ -18,7 +20,7 @@ public interface NewTaskActivityView extends TiView {
     /**
      * Setups the fields to be of values from an existing Task
      *
-     * @param editTaskObject Task that will be edited
+     * @param editTask Task that will be edited
      */
-    void setupEditTask(String editTaskObject);
+    void setupEditTask(final Task editTask);
 }

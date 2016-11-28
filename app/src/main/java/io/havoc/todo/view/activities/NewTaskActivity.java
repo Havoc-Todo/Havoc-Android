@@ -46,6 +46,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
 
     private TaskPriorityEnum selectedTaskPriority;
     private boolean isEditingTask = false; //whether or not we are editing a task
+    private Task currentTask; //Task that is being edited
 
     @NonNull
     @Override
@@ -79,16 +80,16 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         final String taskName = editTextName.getText().toString();
         final String taskDesc = editTextDescription.getText().toString();
         final TaskPriorityEnum taskPriority = selectedTaskPriority;
-        final String user = AuthSharedPrefs.getInstance(this).getString(PrefKey.GOOGLE_USER_EMAIL);
 
-        final Task updatedTask = new Task(taskName, taskDesc, "", null, user, 0, taskPriority,
-                TaskStatusEnum.INCOMPLETE, null);
+        currentTask.setName(taskName);
+        currentTask.setDescription(taskDesc);
+        currentTask.setPriority(taskPriority);
 
-        getPresenter().updateTaskButtonClicked(updatedTask);
+        getPresenter().updateTaskButtonClicked(currentTask);
 
         //Needed so we know to refresh the Detail task view when returning
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("updatedTask", (new Gson()).toJson(updatedTask));
+        returnIntent.putExtra("updatedTask", (new Gson()).toJson(currentTask));
         setResult(Activity.RESULT_OK, returnIntent);
         this.finish();
     }
@@ -118,9 +119,9 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         toolbar.setNavigationOnClickListener(view -> this.finish());
 
         //use this activity to also edit Tasks
-        final String editTaskObject = getIntent().getStringExtra("task");
-        if (editTaskObject != null) {
-            setupEditTask(editTaskObject);
+        final Task editTask = getPresenter().getTaskFromExtras(getIntent(), "taskToEdit");
+        if (editTask != null) {
+            setupEditTask(editTask);
         }
 
         if (isEditingTask) {
@@ -141,22 +142,22 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
     }
 
     @Override
-    public void setupEditTask(final String editTaskObject) {
+    public void setupEditTask(final Task editTask) {
         isEditingTask = true;
+        currentTask = editTask;
         toolbar.setTitle(getString(R.string.toolbar_edit_task_title));
-        final Task task = (new Gson()).fromJson(editTaskObject, Task.class);
 
-        if (task.getPriority() == TaskPriorityEnum.HIGH) {
+        if (editTask.getPriority() == TaskPriorityEnum.HIGH) {
             radioGroupPriorities.check(R.id.radio_button_priority_high);
-        } else if (task.getPriority() == TaskPriorityEnum.MEDIUM) {
+        } else if (editTask.getPriority() == TaskPriorityEnum.MEDIUM) {
             radioGroupPriorities.check(R.id.radio_button_priority_medium);
-        } else if (task.getPriority() == TaskPriorityEnum.LOW) {
+        } else if (editTask.getPriority() == TaskPriorityEnum.LOW) {
             radioGroupPriorities.check(R.id.radio_button_priority_low);
-        } else if (task.getPriority() == TaskPriorityEnum.MEDIUM) {
+        } else if (editTask.getPriority() == TaskPriorityEnum.MEDIUM) {
             radioGroupPriorities.check(R.id.radio_button_priority_none);
         }
 
-        editTextName.setText(task.getName());
-        editTextDescription.setText(task.getDescription());
+        editTextName.setText(editTask.getName());
+        editTextDescription.setText(editTask.getDescription());
     }
 }
