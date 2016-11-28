@@ -1,11 +1,13 @@
 package io.havoc.todo.view.fragments;
 
 
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
@@ -50,6 +53,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.Adapter mWrappedAdapter;
     private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
+    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
     @NonNull
@@ -125,6 +129,15 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
         mRecyclerViewTouchActionGuardManager.setEnabled(true);
 
+        // drag & drop manager
+        mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+        mRecyclerViewDragDropManager.setDraggingItemShadowDrawable(
+                (NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z3));
+
+        // Start dragging after long press
+//        mRecyclerViewDragDropManager.setInitiateOnLongPress(true);
+//        mRecyclerViewDragDropManager.setInitiateOnMove(false);
+
         // swipe manager
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
@@ -132,10 +145,12 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mTaskListAdapter = new TaskListAdapter(getPresenter(), this);
         mAdapter = mTaskListAdapter;
 
+        // wrap for dragging
+        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mTaskListAdapter);
         // wrap for swiping
-        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mTaskListAdapter);
+        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mWrappedAdapter);
 
-        final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+        final GeneralItemAnimator animator = new DraggableItemAnimator();
 
         // Change animations are enabled by default since support-v7-recyclerview v22.
         // Disable the change animation in order to make turning back animation of swiped item works properly.
@@ -145,15 +160,13 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
         mRecyclerView.setItemAnimator(animator);
 
-        //TODO, add'l list decor
-//        mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
-
         // NOTE:
         // The initialization order is very important! This order determines the priority of touch event handling.
         //
         // priority: TouchActionGuard > Swipe > DragAndDrop
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
+        mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
 
         // for debugging
 //        animator.setDebug(true);
@@ -169,11 +182,22 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 //            public void run() {
 //                getPresenter().silentLoadTaskList();
 //            }
-//        }, 0, 3000);
+//        }, 0, 5000);
+    }
+
+    @Override
+    public void onPause() {
+        mRecyclerViewDragDropManager.cancelDrag();
+        super.onPause();
     }
 
     @Override
     public void onDestroyView() {
+        if (mRecyclerViewDragDropManager != null) {
+            mRecyclerViewDragDropManager.release();
+            mRecyclerViewDragDropManager = null;
+        }
+
         if (mRecyclerViewSwipeManager != null) {
             mRecyclerViewSwipeManager.release();
             mRecyclerViewSwipeManager = null;

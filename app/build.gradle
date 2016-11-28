@@ -39,7 +39,7 @@ dependencies {
 //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
 
     //Advanced RecyclerView
-    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar') {
+    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.2@aar') {
         transitive = true
     }
 

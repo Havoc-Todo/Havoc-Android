@@ -2,6 +2,7 @@ package io.havoc.todo.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -10,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -33,12 +37,13 @@ import io.havoc.todo.util.LogUtil;
 
 public class TaskListAdapter
         extends RecyclerView.Adapter<TaskListAdapter.ViewHolder>
-        implements SwipeableItemAdapter<TaskListAdapter.ViewHolder> {
+        implements DraggableItemAdapter<TaskListAdapter.ViewHolder>,
+        SwipeableItemAdapter<TaskListAdapter.ViewHolder> {
 
+    private static RecyclerViewClickListener itemListener;
     private TiPresenter presenter;
     private Context context;
     private List<Task> tasks;
-    private static RecyclerViewClickListener itemListener;
 
     public TaskListAdapter(TiPresenter presenter, RecyclerViewClickListener itemListener) {
         this.presenter = presenter;
@@ -119,6 +124,51 @@ public class TaskListAdapter
     }
 
     @Override
+    public void onMoveItem(int fromPosition, int toPosition) {
+        LogUtil.d("onMoveItem(fromPosition = " + fromPosition + ", toPosition = " + toPosition + ")");
+
+        if (fromPosition == toPosition) {
+            return;
+        }
+
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public boolean onCheckCanStartDrag(ViewHolder holder, int position, int x, int y) {
+        // x, y --- relative from the itemView's top-left
+        final View containerView = holder.mContainer;
+        final View dragHandleView = holder.mDragHandle;
+
+        final int offsetX = containerView.getLeft() + (int) (ViewCompat.getTranslationX(containerView) + 0.5f);
+        final int offsetY = containerView.getTop() + (int) (ViewCompat.getTranslationY(containerView) + 0.5f);
+
+        return hitTest(dragHandleView, x - offsetX, y - offsetY);
+    }
+
+    @Override
+    public ItemDraggableRange onGetItemDraggableRange(ViewHolder holder, int position) {
+        // no drag-sortable range specified
+        return null;
+    }
+
+    @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
+        return true;
+    }
+
+    private boolean hitTest(View v, int x, int y) {
+        final int tx = (int) (ViewCompat.getTranslationX(v) + 0.5f);
+        final int ty = (int) (ViewCompat.getTranslationY(v) + 0.5f);
+        final int left = v.getLeft() + tx;
+        final int right = v.getRight() + tx;
+        final int top = v.getTop() + ty;
+        final int bottom = v.getBottom() + ty;
+
+        return (x >= left) && (x <= right) && (y >= top) && (y <= bottom);
+    }
+
+    @Override
     public int getItemCount() {
         return tasks.size();
     }
@@ -138,7 +188,11 @@ public class TaskListAdapter
 
     @Override
     public int onGetSwipeReactionType(ViewHolder holder, int position, int x, int y) {
-        return Swipeable.REACTION_CAN_SWIPE_BOTH_H;
+        if (onCheckCanStartDrag(holder, position, x, y)) {
+            return Swipeable.REACTION_CAN_NOT_SWIPE_BOTH_H;
+        } else {
+            return Swipeable.REACTION_CAN_SWIPE_BOTH_H;
+        }
     }
 
     @Override
@@ -175,6 +229,10 @@ public class TaskListAdapter
             default:
                 return null;
         }
+    }
+
+    private interface Draggable extends DraggableItemConstants {
+        //nothing
     }
 
     private interface Swipeable extends SwipeableItemConstants {
@@ -252,6 +310,8 @@ public class TaskListAdapter
         AppCompatTextView mTaskNameText;
         @BindView(R.id.priority_text)
         AppCompatTextView mTaskPriorityText;
+        @BindView(R.id.drag_handle)
+        View mDragHandle;
 
         ViewHolder(View v) {
             super(v);
