@@ -88,5 +88,14 @@
             android:text="Priority"
             android:textColor="@color/text_primary"
             android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/dial_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-3dp"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

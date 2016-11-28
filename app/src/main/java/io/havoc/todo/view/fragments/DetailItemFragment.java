@@ -4,11 +4,13 @@ package io.havoc.todo.view.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,10 +46,13 @@ public class DetailItemFragment
     public AppCompatTextView taskDetailPriorityText;
     @BindView(R.id.fab_edit)
     public FloatingActionButton fabEditTask;
+    @BindView(R.id.dial_button)
+    public AppCompatButton dialButton;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
     private Task currentTask; //currently viewed Task
+    private String personToCall; //used for fake numbers
 
     @NonNull
     @Override
@@ -86,10 +93,32 @@ public class DetailItemFragment
 
         setupToolbar();
         fabEditTask.setOnClickListener(this);
+        dialButton.setOnClickListener(this);
 
         //Get the Json back and parse it as a Task
         currentTask = getPresenter().getTaskFromBundle(getArguments());
         setupDetailView(currentTask);
+
+        //Can't do calls on a tablet
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            ArrayList<String> listOfContacts = new ArrayList<String>() {{
+                add("sarah");
+                add("dad");
+                add("mom");
+                add("rachel");
+                add("cain");
+            }};
+            final String taskName = currentTask.getName().toLowerCase();
+
+            for (String s : listOfContacts) {
+                if (taskName.contains(s)) {
+                    dialButton.setVisibility(View.VISIBLE);
+
+                    personToCall = s;
+                    dialButton.setText("Call ".concat(s.toUpperCase()));
+                }
+            }
+        }
 
         return view;
     }
@@ -134,7 +163,34 @@ public class DetailItemFragment
                 editActivityIntent.putExtra("taskToEdit", (new Gson()).toJson(currentTask));
                 startActivityForResult(editActivityIntent, 2);
                 break;
+            case R.id.dial_button:
+                callPerson();
+                break;
         }
+    }
+
+    private void callPerson() {
+        Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+        String number = "tel:";
+        switch (personToCall) {
+            case "sarah":
+                number = number.concat("7703641273");
+                break;
+            case "dad":
+                number = number.concat("7708453849");
+                break;
+            case "mom":
+                number = number.concat("7708550475");
+                break;
+            case "cain":
+                number = number.concat("6789433882");
+                break;
+            case "rachel":
+                number = number.concat("4049554544");
+                break;
+        }
+        dialIntent.setData(Uri.parse(number));
+        startActivity(dialIntent);
     }
 
     @Override
