@@ -62,12 +62,7 @@ public class LoginActivityPresenter extends TiPresenter<LoginActivityView> {
     public void handleSuccessGoogleAuth(Context context, GoogleSignInAccount account) {
         final String email = account.getEmail();
         AuthSharedPrefs.getInstance(context).put(PrefKey.GOOGLE_USER_EMAIL, email);
-
-        assert email != null;
-        //userID is in the format of user-host
-        final String userID = email.replace("@", "-").substring(0, email.length() - 4);
-        AuthSharedPrefs.getInstance(context).put(PrefKey.USER_ID, userID);
-
+        AuthSharedPrefs.getInstance(context).put(PrefKey.USER_ID, email);
         AuthSharedPrefs.getInstance(context).put(PrefKey.IS_AUTH, true);
     }
 
