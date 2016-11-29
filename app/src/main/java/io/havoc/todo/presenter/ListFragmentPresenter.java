@@ -54,7 +54,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
         getView().setLoading(true);
 
         //get the current USER
-        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.GOOGLE_USER_EMAIL);
+        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.USER_ID);
 
         if (sortedByPriority) {
             rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(USER)
@@ -98,7 +98,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
     //Hacky way to update the task list, silently. This will be used to poll for updates
     public void silentLoadTaskList(boolean sortedByPriority) {
         //get the current USER
-        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.GOOGLE_USER_EMAIL);
+        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.USER_ID);
 
         if (sortedByPriority) {
             rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(USER)

@@ -15,6 +15,7 @@ public enum PrefKey {
 
     IS_AUTH, //whether or not the user is authenticated
     GOOGLE_USER_EMAIL, //user's Google email address
+    USER_ID, //userID for tasks is their email like so: user-host
 
     IS_SORTED_PRIORITY //whether or not the list is sorted by priority
 }

@@ -61,9 +61,9 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         //If there was no selected priority, pass in TaskPriorityEnum.NONE
         final TaskPriorityEnum taskPriority = (selectedTaskPriority == null)
                 ? TaskPriorityEnum.NONE : selectedTaskPriority;
-        final String user = AuthSharedPrefs.getInstance(this).getString(PrefKey.GOOGLE_USER_EMAIL);
+        final String userID = AuthSharedPrefs.getInstance(this).getString(PrefKey.USER_ID);
 
-        final Task newTask = new Task(taskName, taskDesc, "", null, user, 0, taskPriority,
+        final Task newTask = new Task(taskName, taskDesc, "", null, userID, 0, taskPriority,
                 TaskStatusEnum.INCOMPLETE, null);
 
         getPresenter().saveNewTaskButtonClicked(newTask);

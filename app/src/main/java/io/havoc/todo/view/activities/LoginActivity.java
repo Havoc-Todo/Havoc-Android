@@ -17,10 +17,8 @@ import net.grandcentrix.thirtyinch.TiActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.havoc.todo.R;
-import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.presenter.LoginActivityPresenter;
 import io.havoc.todo.util.LogUtil;
-import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.view.LoginActivityView;
 
 public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActivityView>
@@ -70,17 +68,16 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
         LogUtil.d("handleSignInResult:" + result.isSuccess());
 
         if (result.isSuccess()) {
-            GoogleSignInAccount account = result.getSignInAccount();
+            final GoogleSignInAccount account = result.getSignInAccount();
+
             if (account != null) {
-                AuthSharedPrefs.getInstance(this).put(PrefKey.GOOGLE_USER_EMAIL, account.getEmail());
+                getPresenter().handleSuccessGoogleAuth(this, account);
             }
 
-            AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, true);
             startActivity(new Intent(this, MainActivity.class)); //go to the MainActivity
             finish();
         } else {
-            AuthSharedPrefs.getInstance(this).put(PrefKey.IS_AUTH, false);
-            AuthSharedPrefs.getInstance(this).remove(PrefKey.GOOGLE_USER_EMAIL);
+            getPresenter().wipeAuthSettings(this);
         }
     }
 
@@ -96,10 +93,7 @@ public class LoginActivity extends TiActivity<LoginActivityPresenter, LoginActiv
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, getPresenter().configureGoogleSignIn())
-                .build();
+        mGoogleApiClient = getPresenter().configureGoogleApiClient(this, this, this);
 
         //Set the Google Sign-In button size
         signInButton.setSize(SignInButton.SIZE_WIDE);
