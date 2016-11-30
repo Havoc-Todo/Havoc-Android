@@ -184,7 +184,7 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
             public void run() {
                 getPresenter().silentLoadTaskList(SettingsSharedPrefs.getInstance(getContext()).getBoolean(PrefKey.IS_SORTED_PRIORITY, false));
             }
-        }, 0, 10000);
+        }, 0, 3000);
     }
 
     @Override
