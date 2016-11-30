@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
@@ -303,7 +304,7 @@ public class TaskListAdapter
         }
     }
 
-    static class ViewHolder extends AbstractSwipeableItemViewHolder implements View.OnClickListener {
+    static class ViewHolder extends AbstractSwipeableItemViewHolder implements DraggableItemViewHolder, View.OnClickListener {
         @BindView(R.id.container)
         FrameLayout mContainer;
         @BindView(android.R.id.text1)
@@ -312,6 +313,7 @@ public class TaskListAdapter
         AppCompatTextView mTaskPriorityText;
         @BindView(R.id.drag_handle)
         View mDragHandle;
+        private int mDragStateFlags;
 
         ViewHolder(View v) {
             super(v);
@@ -323,6 +325,16 @@ public class TaskListAdapter
         @Override
         public void onClick(View v) {
             itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
+        }
+
+        @Override
+        public int getDragStateFlags() {
+            return mDragStateFlags;
+        }
+
+        @Override
+        public void setDragStateFlags(int flags) {
+            mDragStateFlags = flags;
         }
 
         @Override

@@ -26,6 +26,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import net.grandcentrix.thirtyinch.TiFragment;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -177,12 +179,12 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
 
         //Polls the list for updates to Tasks, hacky AF
         //TODO, uncomment this
-//        new Timer().scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                getPresenter().silentLoadTaskList();
-//            }
-//        }, 0, 5000);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                getPresenter().silentLoadTaskList(SettingsSharedPrefs.getInstance(getContext()).getBoolean(PrefKey.IS_SORTED_PRIORITY, false));
+            }
+        }, 0, 10000);
     }
 
     @Override
