@@ -52,7 +52,8 @@ public class DetailItemFragment
     public Toolbar toolbar;
 
     private Task currentTask; //currently viewed Task
-    private String personToCall; //used for fake numbers
+    private String person; //used for fake numbers and fake emailing
+    private boolean email;
 
     @NonNull
     @Override
@@ -100,22 +101,28 @@ public class DetailItemFragment
         setupDetailView(currentTask);
 
         //Can't do calls on a tablet
-        if (!getResources().getBoolean(R.bool.isTablet)) {
-            ArrayList<String> listOfContacts = new ArrayList<String>() {{
-                add("sarah");
-                add("dad");
-                add("mom");
-                add("rachel");
-                add("cain");
-            }};
-            final String taskName = currentTask.getName().toLowerCase();
+        ArrayList<String> listOfContacts = new ArrayList<String>() {{
+            add("sarah");
+            add("dad");
+            add("mom");
+            add("rachel");
+            add("cain");
+        }};
+        final String taskName = currentTask.getName().toLowerCase();
 
-            for (String s : listOfContacts) {
-                if (taskName.contains(s)) {
-                    dialButton.setVisibility(View.VISIBLE);
+        for (String s : listOfContacts) {
+            if (taskName.contains(s) && (taskName.contains("dial") || taskName.contains("email") || taskName.contains("call"))) {
 
-                    personToCall = s;
+                person = s;
+                if (taskName.contains("call") || taskName.contains("dial") && !getResources().getBoolean(R.bool.isTablet)) {
                     dialButton.setText("Call ".concat(s.toUpperCase()));
+                    email = false;
+                    dialButton.setVisibility(View.VISIBLE);
+                }
+                if (taskName.contains("email")) {
+                    dialButton.setText("Email ".concat(s.toUpperCase()));
+                    email = true;
+                    dialButton.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -164,15 +171,46 @@ public class DetailItemFragment
                 startActivityForResult(editActivityIntent, 2);
                 break;
             case R.id.dial_button:
-                callPerson();
+                if (email) {
+                    emailPerson();
+                } else {
+                    callPerson();
+                }
                 break;
         }
+    }
+
+    private void emailPerson() {
+        String email = "";
+
+        switch (person) {
+            case "sarah":
+                email = "sarahmscott94@gmail.com";
+                break;
+            case "dad":
+                email = "leegantt@gmail.com";
+                break;
+            case "mom":
+                email = "maryjogantt@gmail.com";
+                break;
+            case "cain":
+                email = "wiiareonfire@gmail.com";
+                break;
+            case "rachel":
+                email = "rlgantt@gmail.com";
+                break;
+        }
+
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO,
+                Uri.fromParts("mailto", email, null));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, email);
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
     private void callPerson() {
         Intent dialIntent = new Intent(Intent.ACTION_DIAL);
         String number = "tel:";
-        switch (personToCall) {
+        switch (person) {
             case "sarah":
                 number = number.concat("7703641273");
                 break;
