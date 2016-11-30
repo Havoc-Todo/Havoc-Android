@@ -37,6 +37,7 @@ import io.havoc.todo.adapters.listeners.RecyclerViewClickListener;
 import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.model.Task;
 import io.havoc.todo.presenter.ListFragmentPresenter;
+import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.util.prefs.SettingsSharedPrefs;
 import io.havoc.todo.view.ListFragmentView;
 import io.havoc.todo.view.activities.MainActivity;
@@ -182,7 +183,9 @@ public class ListFragment extends TiFragment<ListFragmentPresenter, ListFragment
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                getPresenter().silentLoadTaskList(SettingsSharedPrefs.getInstance(getContext()).getBoolean(PrefKey.IS_SORTED_PRIORITY, false));
+                if (AuthSharedPrefs.getInstance(getContext()).getBoolean(PrefKey.IS_AUTH)) {
+                    getPresenter().silentLoadTaskList(SettingsSharedPrefs.getInstance(getContext()).getBoolean(PrefKey.IS_SORTED_PRIORITY, false));
+                }
             }
         }, 0, 3000);
     }
