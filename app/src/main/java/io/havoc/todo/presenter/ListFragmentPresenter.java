@@ -79,7 +79,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                     .flatMap(response -> Observable.from(response.getTasks()))
                     //filter out Tasks that are ARCHIVED or DONE
                     .filter(task -> task.getStatus() == TaskStatusEnum.INCOMPLETE)
-                    .toList()
+                    .toSortedList((a, b) -> b.getIndexInList() - a.getIndexInList())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(RxTiPresenterUtils.deliverLatestToView(this))
@@ -119,7 +119,7 @@ public class ListFragmentPresenter extends TiPresenter<ListFragmentView> {
                     .flatMap(response -> Observable.from(response.getTasks()))
                     //filter out Tasks that are ARCHIVED or DONE
                     .filter(task -> task.getStatus() == TaskStatusEnum.INCOMPLETE)
-                    .toList()
+                    .toSortedList((a, b) -> b.getIndexInList() - a.getIndexInList())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(RxTiPresenterUtils.deliverLatestToView(this))

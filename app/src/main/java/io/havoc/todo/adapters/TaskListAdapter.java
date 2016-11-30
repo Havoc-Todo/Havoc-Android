@@ -132,7 +132,11 @@ public class TaskListAdapter
             return;
         }
 
-        notifyItemMoved(fromPosition, toPosition);
+        final Task movedTask = tasks.remove(fromPosition);
+        movedTask.setIndexInList(toPosition);
+        tasks.add(toPosition, movedTask);
+
+        notifyDataSetChanged();
     }
 
     @Override

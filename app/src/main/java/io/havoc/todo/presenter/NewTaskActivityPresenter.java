@@ -1,6 +1,7 @@
 package io.havoc.todo.presenter;
 
 
+import android.content.Context;
 import android.content.Intent;
 
 import com.google.gson.Gson;
@@ -9,10 +10,14 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
 
+import io.havoc.todo.model.PrefKey;
 import io.havoc.todo.model.Task;
+import io.havoc.todo.model.TaskStatusEnum;
 import io.havoc.todo.model.service.HavocService;
 import io.havoc.todo.util.LogUtil;
+import io.havoc.todo.util.prefs.AuthSharedPrefs;
 import io.havoc.todo.view.NewTaskActivityView;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -20,9 +25,11 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
 
     private RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
 
-    @Override
-    public void onWakeUp() {
-        super.onWakeUp();
+    private Context context;
+    private int numTasksInList = 0;
+
+    public NewTaskActivityPresenter(Context context) {
+        this.context = context;
     }
 
     /**
@@ -52,6 +59,26 @@ public class NewTaskActivityPresenter extends TiPresenter<NewTaskActivityView> {
      */
     public Task getTaskFromExtras(Intent data, String extraName) {
         return (new Gson()).fromJson(data.getStringExtra(extraName), Task.class);
+    }
+
+    //FIXME, always returns 0
+    public int getNumberOfTasks() {
+        final String USER = AuthSharedPrefs.getInstance(context).getString(PrefKey.USER_ID);
+
+        rxHelper.manageSubscription(HavocService.getInstance().getHavocAPI().getAllTasks(USER)
+                .flatMap(response -> Observable.from(response.getTasks()))
+                //filter out Tasks that are ARCHIVED or DONE
+                .filter(task -> task.getStatus() == TaskStatusEnum.INCOMPLETE)
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxTiPresenterUtils.deliverLatestToView(this))
+                .subscribe(list -> {
+                    numTasksInList = list.size();
+                }, Throwable::printStackTrace)
+        );
+
+        return numTasksInList;
     }
 
     /**

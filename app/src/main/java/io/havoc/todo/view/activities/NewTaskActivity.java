@@ -51,7 +51,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
     @NonNull
     @Override
     public NewTaskActivityPresenter providePresenter() {
-        return new NewTaskActivityPresenter();
+        return new NewTaskActivityPresenter(this);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         Intent returnIntent = new Intent();
         returnIntent.putExtra("addedNewTask", true);
         setResult(Activity.RESULT_OK, returnIntent);
-        this.finish();
+        finish();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         Intent returnIntent = new Intent();
         returnIntent.putExtra("updatedTask", (new Gson()).toJson(currentTask));
         setResult(Activity.RESULT_OK, returnIntent);
-        this.finish();
+        finish();
     }
 
     @Override
