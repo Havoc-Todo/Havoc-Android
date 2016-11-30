@@ -44,7 +44,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
     @BindView(R.id.fab_save)
     FloatingActionButton fabSaveTask;
 
-    private TaskPriorityEnum selectedTaskPriority;
+    private TaskPriorityEnum selectedTaskPriority = TaskPriorityEnum.NONE; //NONE by default
     private boolean isEditingTask = false; //whether or not we are editing a task
     private Task currentTask; //Task that is being edited
 
@@ -59,8 +59,7 @@ public class NewTaskActivity extends TiActivity<NewTaskActivityPresenter, NewTas
         final String taskName = editTextName.getText().toString();
         final String taskDesc = editTextDescription.getText().toString();
         //If there was no selected priority, pass in TaskPriorityEnum.NONE
-        final TaskPriorityEnum taskPriority = (selectedTaskPriority == null)
-                ? TaskPriorityEnum.NONE : selectedTaskPriority;
+        final TaskPriorityEnum taskPriority = selectedTaskPriority;
         final String userID = AuthSharedPrefs.getInstance(this).getString(PrefKey.USER_ID);
 
         final Task newTask = new Task(taskName, taskDesc, "", null, userID, 0, taskPriority,
